@@ -17,3 +17,4 @@ SUCCESS. added ssh key to replit and github account. but still asks for usernmae
 
 Test 3, if replit contributions is accepted by github
 SSH is ready. see if commit via replit function is accepted not as my contribution.
+FAIL. Github still does not recognize it via replit function
