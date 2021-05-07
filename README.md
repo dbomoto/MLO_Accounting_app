@@ -5,3 +5,6 @@ Accounting application for private use.
 Upon research, Windows 7 not supported anymore, find alternative to this.
 
 Migrated ro Replit in order to access MongoDB
+
+Test 1, if replit contributions is accepted by github
+Updated the git config file with username and email.
