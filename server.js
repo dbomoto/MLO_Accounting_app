@@ -42,6 +42,7 @@ mongoose.connect(process.env.MONGO_URI, {
           .send('Not Found, but app is running');
       });    
 
+    // make the app listen
     app.listen(process.env.PORT || 3000, function () {
         console.log("Listening on port " + process.env.PORT);
       });    
