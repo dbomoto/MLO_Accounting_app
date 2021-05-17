@@ -20,11 +20,47 @@
         <input type="text" id="clientName" name="clientName"><br> 
         <label for="companyName">Company Name</label><br>
         <input type="text" id="companyName" name="companyName"><br>
+        <label for="info"></label>
+        <select name="info" id="info">
+          <option name="profFee">Professional Fee</option>
+          <option name="all records">All Records</option>
+        </select>
         <input type="submit" value="Search">   
+        <input type="reset">
       </form>
     </div>
+    <br>
 
+    <!-- CLIENT DATA -->
+    <!-- table will adpat to what kind of "info" input is chosen -->
+    <div>
+      <table>
+        <!-- change caption to what the user selects in the "info" input-->
+        <caption>PROFESSIONAL FEE BALANCE</caption>
+        <tr>
+          <th>BLANK</th>
+          <td>January</td>
+          <td>February</td>
+          <td>And so on</td>
+        </tr>
+        <tr>
+          <th>Client 1</th>
+          <td>1000</td>
+          <td>2000</td>
+          <td>And so on</td>
+        </tr>
+      </table>
+    </div>
     
+    <!-- SUMMARY -->
+    <!-- summary will adapt depending on what "info" input is chosen -->
+    <div>
+      <h4>Total Collectible</h4>
+      <p>3000</p>
+      <br>
+      <h4>Clients with balance</h4>
+      <p>Summarize clients with with their total</p>
+    </div>
 
   </body>
 </html>
