@@ -1,9 +1,41 @@
-label {
-  color: red;
+/*  
+dataOutput Section
+*/
+table {
+  width: 100%;
 }
 
 table, th, td {
   border: 1px solid black;
   border-collapse: collapse;
 }
-/*# sourceMappingURL=index.css.map */
+
+caption, th, td {
+  padding: 5px;
+}
+
+/*  
+Global Styles
+*/
+#searchForm, #dataOutput, #summary {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+body {
+  background-color: #f2f2f2;
+}
+
+/*  
+searchForm Section
+*/
+#searchForm {
+  max-width: 280px;
+}
+#searchForm * {
+  width: 100%;
+}
+#searchForm label, #searchForm input, #searchForm select {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
