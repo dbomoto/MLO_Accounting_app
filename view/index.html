@@ -10,9 +10,8 @@
     <link rel="stylesheet" href="/public/homepage/index.css" type="text/css">
   </head>
   <body>
-
     <!-- SEARCH FORM -->
-    <div>
+    <div id="searchForm">
       <form>
         <label for="indexNumber">Index Number</label><br>
         <input type="text" id="indexNumber" name="indexNumber"><br>
@@ -22,26 +21,27 @@
         <input type="text" id="companyName" name="companyName"><br>
         <label for="info"></label>
         <select name="info" id="info">
-          <option name="profFee">Professional Fee</option>
-          <option name="all records">All Records</option>
+          <option name="all records" selected>All Records</option>
+          <option name="profFee">Professional Fee</option>     
         </select>
-        <input type="submit" value="Search">   
+        <br>
+        <input type="submit" value="Search">  
+        <br>
         <input type="reset">
       </form>
     </div>
-    <br>
 
     <!-- CLIENT DATA -->
     <!-- table will adpat to what kind of "info" input is chosen -->
-    <div>
+    <div id="dataOutput">
       <table>
         <!-- change caption to what the user selects in the "info" input-->
-        <caption>PROFESSIONAL FEE BALANCE</caption>
+        <caption>SAMPLE OUTPUT</caption>
         <tr>
-          <th>BLANK</th>
-          <td>January</td>
-          <td>February</td>
-          <td>And so on</td>
+          <th></th>
+          <th>January</th>
+          <th>February</th>
+          <th>And so on</th>
         </tr>
         <tr>
           <th>Client 1</th>
@@ -54,10 +54,9 @@
     
     <!-- SUMMARY -->
     <!-- summary will adapt depending on what "info" input is chosen -->
-    <div>
+    <div id="summary">
       <h4>Total Collectible</h4>
       <p>3000</p>
-      <br>
       <h4>Clients with balance</h4>
       <p>Summarize clients with with their total</p>
     </div>
