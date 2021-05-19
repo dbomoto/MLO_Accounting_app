@@ -1,20 +1,40 @@
 # MLO_Accounting_app
-Accounting application for private use.
-
-# On MongoDB connection using VSCode
-Upon research, Windows 7 not supported anymore, find alternative to this.
-
-Migrated ro Replit in order to access MongoDB
-
-Test 1, if replit contributions is accepted by github
-Updated the git config file with username and email.
-FAIL. Not recognized as my contribution.
 
 
-Test 2, if replit contributions is accepted by github
-Commit via command line, instead of replit
-SUCCESS. added ssh key to replit and github account. but still asks for usernmae password via git.
+### Purpose of app
+- Accounting application for private use.
 
-Test 3, if replit contributions is accepted by github
-SSH is ready. see if commit via replit function is accepted not as my contribution.
-FAIL. Github still does not recognize it via replit function
+### Scope of app
+- Limited to only MLO personel
+
+### User Stories
+- all request will pass through the query object 
+- reqeust to ```/client?userquery```
+
+### Deployment
+- Replit since it is only for private use.
+
+### UI/UX Design
+- FIN
+
+### Database
+- MongoDB personal, use client account when final  
+
+### Tests
+- Pending
+
+### Authentication
+- Pending
+
+### Webchat
+- No need 
+
+### Security
+- Pending
+
+### User Review
+- Pending
+
+### Refactoring
+- Pending
+

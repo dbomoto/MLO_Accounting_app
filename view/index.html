@@ -8,11 +8,12 @@
     <meta name="description" content="accounting app">
     <meta name="keywords" content="accounting, app, tool,">
     <link rel="stylesheet" href="/public/homepage/index.css" type="text/css">
+    <!-- <script src="/public/homepage/index.js"></script> -->
   </head>
   <body>
     <!-- SEARCH FORM -->
-    <div id="searchForm">
-      <form>
+    <div id="searchForm" name="searchForm">
+      <form id="formData">
         <label for="indexNumber">Index Number</label><br>
         <input type="text" id="indexNumber" name="indexNumber"><br>
         <label for="clientName">Client Name</label><br>
@@ -21,11 +22,11 @@
         <input type="text" id="companyName" name="companyName"><br>
         <label for="info"></label>
         <select name="info" id="info">
-          <option name="all records" selected>All Records</option>
-          <option name="profFee">Professional Fee</option>     
+          <option name="allRecords" selected>All Records</option>
+          <option name="professioanlFee">Professional Fee</option>     
         </select>
         <br>
-        <input type="submit" value="Search">  
+        <input type="submit" value="Search" id="submitSearch">  
         <br>
         <input type="reset">
       </form>
@@ -62,5 +63,6 @@
     </div>
 
   </body>
+  <script src="/public/homepage/index.js"></script>
 </html>
 
