@@ -14,9 +14,6 @@
 ### Deployment
 - Replit since it is only for private use.
 
-### UI/UX Design
-- FIN
-
 ### Database
 - MongoDB personal, use client account when final  
 
@@ -35,6 +32,5 @@
 ### User Review
 - Pending
 
-### Refactoring
-- Pending
+
 

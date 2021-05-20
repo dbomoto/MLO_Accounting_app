@@ -2,6 +2,8 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+
 
 // local modules
 const apiRoutes = require('./controller/api.js');
@@ -11,6 +13,11 @@ let app = express();
 
 // public declarations
 app.use('/public', express.static(process.cwd() + '/public'));
+
+// loading middlewares
+// Setting { extended: true } allows the bodyParser to accept json like data within the form data including nested objects.
+// https://stackoverflow.com/questions/9304888/how-to-get-data-passed-from-a-form-in-express-node-js
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // connection to database
 mongoose.connect(process.env.MONGO_URI, {
