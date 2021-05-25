@@ -9,7 +9,8 @@ module.exports = function(app,userData){
     
     app.route('/client')
       .post((req,res)=>{
-        console.log(req.body);
+        // console.log(req.body, 'body');
+        // console.log(Object.keys(req.body));
         res.json({data:'sample api response'})
         return
       })
