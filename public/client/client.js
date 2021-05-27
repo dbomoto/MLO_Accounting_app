@@ -8,7 +8,7 @@ window.onload = function() {
 // https://stackoverflow.com/questions/49801070/formdata-returns-blank-object
   async function searchClient() {
     const form = new FormData(submitSearch)
-    const data = await fetch('/client',{
+    const data = await fetch('/client/search',{
       method: 'POST',
       body: form
     })
