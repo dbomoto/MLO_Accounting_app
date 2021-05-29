@@ -24,10 +24,36 @@ module.exports = function(app,userData){
 
   // route for search client requests
     app.route('/client/search')
+      // searches for the clients that match
       .post((req,res)=>{
         // console.log(req.body, 'body');
         // console.log(Object.keys(req.body));
         res.json({data:'sample api response'})
         return
+      })
+      // get the client data that the user chooses
+      .get((req,res)=>{
+
+      })
+      // updates the data of the client
+      .put((req,res)=>{
+
+      }) 
+
+  // route for add client requests
+    app.route('/add/client')  
+    // adds the client to the database
+      .post((req,res)=>{
+
+        // if successfull
+        const newClient = new userData(req.body);
+        newClient.profFee = [];
+        newClient.save((err,doc)=>{
+          if (err) {
+            res.json({message: 'Error on saving new client.'});
+          }
+        res.json({message: 'Client successfully added'});
+        })
+        
       })         
 }
