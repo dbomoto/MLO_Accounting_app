@@ -15,30 +15,33 @@ window.onload = function() {
 
     // use 'parsed' to display response on webpage
     const parsed = await dataClient.json();
-    const clientList = '';
+    // needs to be let declaration in order for it to be reassigned to other values
+    let clientList = '';
     const parsedData = parsed.data;
-    console.log(parsedData)
+    // console.log(parsedData)
     for (const temp of parsedData){
-      clientList += `<tr>
+      clientList += `
+      <tr>
         <td>${temp.indexNumber}</td>
         <td>${temp.firstName}</td>
         <td>${temp.lastName}</td>
         <td>${temp.companyName}</td>
-      </tr>`
+      </tr>
+      `
     }
-    console.log(clientList)
+    // console.log(clientList)
 
     // console.log(parsed.data)
-    // display.innerHTML = `<table>
-    // <caption>MATCHED RECORDS</caption>
-    //   <tr>
-    //     <th>Index Number</th>
-    //     <th>First Name</th>
-    //     <th>Last Name</th>
-    //     <th>Company Name</th>
-    //   </tr>
-    //   ${clientList}
-    // </table>`
+    display.innerHTML = `<table>
+    <caption>MATCHED RECORDS</caption>
+      <tr>
+        <th>Index Number</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Company Name</th>
+      </tr>
+      ${clientList}
+    </table>`
   }
 
   submitSearch.onsubmit = (e) => {
