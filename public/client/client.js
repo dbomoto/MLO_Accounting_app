@@ -1,4 +1,4 @@
-window.onload = function() {
+// window.onload = function() {
 
   const display = document.getElementById('dataOutput');
 
@@ -6,6 +6,8 @@ window.onload = function() {
 
 // Pass the FormData object itself to XMLHttpRequest or fetch. It isn't an object that JSON.stringify can handle.
 // https://stackoverflow.com/questions/49801070/formdata-returns-blank-object
+
+// searches database for matching user querie
   async function searchClient() {
     const form = new FormData(submitSearch)
     const dataClient = await fetch('/client/search',{
@@ -20,12 +22,14 @@ window.onload = function() {
     const parsedData = parsed.data;
     // console.log(parsedData)
     for (const temp of parsedData){
+      // use temp._id as the reference for that document to be used when user chooses that document. take note of double quotes and single quotes on the onlcick event in order to pass the value as text.
       clientList += `
       <tr>
         <td>${temp.indexNumber}</td>
         <td>${temp.firstName}</td>
         <td>${temp.lastName}</td>
         <td>${temp.companyName}</td>
+        <td><input type="button" value="VIEW DETAILS" onclick="viewDetails('${temp._id}')"></td>
       </tr>
       `
     }
@@ -39,6 +43,7 @@ window.onload = function() {
         <th>First Name</th>
         <th>Last Name</th>
         <th>Company Name</th>
+        <th>Commands</th>
       </tr>
       ${clientList}
     </table>`
@@ -49,4 +54,13 @@ window.onload = function() {
     searchClient();
   }
 
-}
+// }
+
+// browser cannot identify function viewDetails when inside the onload event, must be declared outside
+// get document from database and display it
+  async function viewDetails(id){
+    // alert('successfully called');
+    // alert(id);
+    const dataClient = await fetch(`/client/search?id=${id}`)
+  }
+
