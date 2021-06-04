@@ -62,5 +62,36 @@
     // alert('successfully called');
     // alert(id);
     const dataClient = await fetch(`/client/search?id=${id}`)
+    const parsed = await dataClient.json();
+    let summary = '';
+    const {indexNumber} = parsed;
+    const {firstName} = parsed;
+    const {lastName} = parsed;
+    const {companyName} = parsed;
+    const {profFee} = parsed;
+
+    for(let temp of profFee){
+      let profFeeData = temp.split(":");
+      summary += `
+      <tr>
+        <td>${profFeeData[0]}</td>
+        <td>${profFeeData[1]}</td>
+        <td>${profFeeData[2]}</td>
+      </tr>
+      `
+    }
+
+    display.innerHTML = `<table>
+    <caption>${indexNumber} ${firstName} ${lastName} ${companyName}</caption>
+      <tr>
+        <th>Professional Fee</th>
+      </tr>   
+      <tr>
+        <th>Month</th>
+        <th>Year</th>
+        <th>Amount</th>
+      </tr>   
+      ${summary}
+    </table>`    
   }
 

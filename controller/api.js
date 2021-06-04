@@ -56,13 +56,13 @@ module.exports = function(app,userData){
       // get the client data that the user chooses
       .get((req,res)=>{
         // console.log(req.query)
-        userData.find(req.query.id,function(err,doc){
+        userData.findById(req.query.id,function(err,doc){
           if (err) {
             res.json({data:'error on server'});
             return;
           }
           // console.log(docs)
-          res.json({data:doc})
+          res.json(doc)
           return;
         })        
       })
