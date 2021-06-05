@@ -42,7 +42,7 @@ mongoose.connect(process.env.MONGO_URI, {
     // for profFee, sample input format for this will be "January:2021:3000" for month:year:amount
     const Schema = mongoose.Schema;
     const userDataSchema = new Schema({
-       indexNumber: Number,
+       indexNumber: String,
        firstName: String,
        lastName: String,
        companyName: String,

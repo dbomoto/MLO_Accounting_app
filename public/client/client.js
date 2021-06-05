@@ -1,4 +1,3 @@
-// window.onload = function() {
 
   const display = document.getElementById('dataOutput');
 
@@ -49,14 +48,15 @@
     </table>`
   }
 
+// replace default action of submit in form
   submitSearch.onsubmit = (e) => {
     e.preventDefault();
     searchClient();
   }
 
-// }
 
 // browser cannot identify function viewDetails when inside the onload event, must be declared outside
+
 // get document from database and display it
   async function viewDetails(id){
     // alert('successfully called');
@@ -64,14 +64,17 @@
     const dataClient = await fetch(`/client/search?id=${id}`)
     const parsed = await dataClient.json();
     let summary = '';
+    let total = 0;
     const {indexNumber} = parsed;
     const {firstName} = parsed;
     const {lastName} = parsed;
     const {companyName} = parsed;
     const {profFee} = parsed;
 
+    // set output format for display
     for(let temp of profFee){
       let profFeeData = temp.split(":");
+      total += parseInt(profFeeData[2]);
       summary += `
       <tr>
         <td>${profFeeData[0]}</td>
@@ -80,11 +83,18 @@
       </tr>
       `
     }
+    summary += `
+    <tr>
+      <td colspan="2">TOTAL</td>
+      <td>${total}</td>
+    </tr>
+    `
 
+    // display client data on browser
     display.innerHTML = `<table>
     <caption>${indexNumber} ${firstName} ${lastName} ${companyName}</caption>
       <tr>
-        <th>Professional Fee</th>
+        <th colspan="3">Professional Fee</th>
       </tr>   
       <tr>
         <th>Month</th>

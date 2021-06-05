@@ -70,6 +70,10 @@ module.exports = function(app,userData){
       .put((req,res)=>{
 
       }) 
+      // deletes the data of the client
+      .delete((req,res)=>{
+        
+      })
 
   // route for add client requests
     app.route('/add/client')  
