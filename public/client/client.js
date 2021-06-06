@@ -71,7 +71,7 @@
     const {companyName} = parsed;
     const {profFee} = parsed;
 
-    // set output format for display
+    // set output format for display; MONTH, YEAR, AMOUNT, DATE PAID
     for(let temp of profFee){
       let profFeeData = temp.split(":");
       total += parseInt(profFeeData[2]);
@@ -80,6 +80,7 @@
         <td>${profFeeData[0]}</td>
         <td>${profFeeData[1]}</td>
         <td>${profFeeData[2]}</td>
+        <td>${profFeeData[3]}</td>
       </tr>
       `
     }
@@ -100,8 +101,10 @@
         <th>Month</th>
         <th>Year</th>
         <th>Amount</th>
+        <th>Date Paid</th>
       </tr>   
       ${summary}
-    </table>`    
+    </table>
+    <input type="button" value="ADD RECORD" id="addProfFeeRec">`    
   }
 

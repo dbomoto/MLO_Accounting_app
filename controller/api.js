@@ -22,7 +22,7 @@ module.exports = function(app,userData){
           return
       })   
 
-  // route for search client requests
+  // route for client requests
     app.route('/client/search')
       // searches for the clients that match
       .post((req,res)=>{
@@ -66,7 +66,7 @@ module.exports = function(app,userData){
           return;
         })        
       })
-      // updates the data of the client
+      // updates the data of the client; only prof fee for now
       .put((req,res)=>{
 
       }) 
