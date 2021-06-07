@@ -39,14 +39,18 @@ mongoose.connect(process.env.MONGO_URI, {
     console.log('database connected.')
 
     // Mongoose Schema Setting
-    // for profFee, sample input format for this will be "January:2021:3000" for month:year:amount
     const Schema = mongoose.Schema;
     const userDataSchema = new Schema({
        indexNumber: String,
        firstName: String,
        lastName: String,
        companyName: String,
-       profFee: [String] 
+       profFee: [{
+        month: {type:String},
+        year: {type:String},
+        amount: {type:Number},
+        datePaid: {type:String}
+       }] 
     })
     const userData = mongoose.model('mloClients', userDataSchema);
 

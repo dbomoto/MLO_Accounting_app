@@ -65,28 +65,44 @@
     const parsed = await dataClient.json();
     let summary = '';
     let total = 0;
+    const {_id} = parsed;
     const {indexNumber} = parsed;
     const {firstName} = parsed;
     const {lastName} = parsed;
     const {companyName} = parsed;
     const {profFee} = parsed;
 
-    // set output format for display; MONTH, YEAR, AMOUNT, DATE PAID
-    for(let temp of profFee){
-      let profFeeData = temp.split(":");
-      total += parseInt(profFeeData[2]);
-      summary += `
-      <tr>
-        <td>${profFeeData[0]}</td>
-        <td>${profFeeData[1]}</td>
-        <td>${profFeeData[2]}</td>
-        <td>${profFeeData[3]}</td>
-      </tr>
-      `
+    // set output format for display; MONTH, YEAR, AMOUNT, DATE PAID, EDIT RECORD, SAVE RECORD
+    for (let i = 0 ; i < profFee.length ; i++){
+      for(let temp in profFee[i]){
+        total += temp.amount;
+        summary += `
+        <tr>
+          <td>${temp.month}</td>
+          <td>${temp.year}</td>
+          <td>${temp.amount}</td>
+          <td>${temp.datePaid}</td>
+          <td><input type="button" value="EDIT" id="editProfFeeRec('${i}')"></td>
+        </tr>
+        `
+      }
     }
+    // for(let temp of profFee){
+    //   let profFeeData = temp.split(":");
+    //   total += parseInt(profFeeData[2]);
+    //   summary += `
+    //   <tr>
+    //     <td>${profFeeData[0]}</td>
+    //     <td>${profFeeData[1]}</td>
+    //     <td>${profFeeData[2]}</td>
+    //     <td>${profFeeData[3]}</td>
+    //     <td><input type="button" value="EDIT" id="editProfFeeRec"></td>
+    //   </tr>
+    //   `
+    // }
     summary += `
     <tr>
-      <td colspan="2">TOTAL</td>
+      <td colspan="3">TOTAL</td>
       <td>${total}</td>
     </tr>
     `
@@ -95,16 +111,40 @@
     display.innerHTML = `<table>
     <caption>${indexNumber} ${firstName} ${lastName} ${companyName}</caption>
       <tr>
-        <th colspan="3">Professional Fee</th>
+        <th colspan="5">Professional Fee</th>
       </tr>   
       <tr>
         <th>Month</th>
         <th>Year</th>
         <th>Amount</th>
         <th>Date Paid</th>
+        <th>Commands</th>
       </tr>   
       ${summary}
     </table>
-    <input type="button" value="ADD RECORD" id="addProfFeeRec">`    
+    <input type="button" value="ADD RECORD" id="addProfFeeRec" onclick="addProfFeeRec('${_id}')">`    
   }
 
+  // add a blank section of record ready for edit by the user
+  async function addProfFeeRec(id){
+    // alert(id)
+    const formData = new FormData();
+    formData.append('month', '');
+    formData.append('year', '');
+    formData.append('amount', '');
+    formData.append('datePaid', '');
+
+    const dataClient = await fetch('/client/search',{
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': 400
+      },
+      body: formData
+    })
+
+  }
+
+  async function editProfFeeRec(recordIndex){
+    // alert(recordIndex)
+  }
