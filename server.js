@@ -47,7 +47,7 @@ mongoose.connect(process.env.MONGO_URI, {
        companyName: String,
        profFee: [{
         month: {type:String},
-        year: {type:String},
+        year: {type:Number},
         amount: {type:Number},
         datePaid: {type:String}
        }] 

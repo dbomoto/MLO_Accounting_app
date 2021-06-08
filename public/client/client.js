@@ -3,6 +3,11 @@
 
   const submitSearch = document.getElementById('formData');
 
+  const blankData = new FormData();
+  blankData.append('month', 'January');
+  blankData.append('year', 2000);
+  blankData.append('amount', 0);
+  blankData.append('datePaid', 'n/a');
 // Pass the FormData object itself to XMLHttpRequest or fetch. It isn't an object that JSON.stringify can handle.
 // https://stackoverflow.com/questions/49801070/formdata-returns-blank-object
 
@@ -122,27 +127,22 @@
       </tr>   
       ${summary}
     </table>
-    <input type="button" value="ADD RECORD" id="addProfFeeRec" onclick="addProfFeeRec('${_id}')">`    
+    <input type="button" value="ADD RECORD" id="addProfFeeRec" onclick="addProfFeeRec('${_id},${blankData}')">`    
   }
 
   // add a blank section of record ready for edit by the user
-  async function addProfFeeRec(id){
-    // alert(id)
-    const formData = new FormData();
-    formData.append('month', '');
-    formData.append('year', '');
-    formData.append('amount', '');
-    formData.append('datePaid', '');
+  async function addProfFeeRec(id,formData){
+    // if a new record is needed
 
+    // append id to body
     const dataClient = await fetch('/client/search',{
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Content-Length': 400
-      },
-      body: formData
+      body: blankData
     })
+    const parsed = await dataClient.json();
+    alert(parsed.data)
 
+    // if record needs to be updated, use the formData argument to pass in the values
   }
 
   async function editProfFeeRec(recordIndex){

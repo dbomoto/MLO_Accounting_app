@@ -68,10 +68,9 @@ module.exports = function(app,userData){
       })
       // updates the data of the client; only prof fee for now
       .put((req,res)=>{
-        // console.log(Object.keys(req))
-        // console.log(req.headers)
-        console.log(req.method)
         console.log(req.body)
+        res.json({data:req.body.month})
+        
       }) 
       // deletes the data of the client
       .delete((req,res)=>{
