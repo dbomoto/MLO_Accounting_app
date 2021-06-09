@@ -3,11 +3,19 @@
 
   const submitSearch = document.getElementById('formData');
 
-  const blankData = new FormData();
-  blankData.append('month', 'January');
-  blankData.append('year', 2000);
-  blankData.append('amount', 0);
-  blankData.append('datePaid', 'n/a');
+  // blank document 
+  // const blankData = new FormData();
+  // blankData.append('month', 'January');
+  // blankData.append('year', 2000);
+  // blankData.append('amount', 0);
+  // blankData.append('datePaid', 'n/a');
+  const blankData = {
+    month: 'January',
+    year: 2000,
+    amount: 0,
+    datePaid: 'n/a'
+  }
+
 // Pass the FormData object itself to XMLHttpRequest or fetch. It isn't an object that JSON.stringify can handle.
 // https://stackoverflow.com/questions/49801070/formdata-returns-blank-object
 
@@ -79,39 +87,25 @@
 
     // set output format for display; MONTH, YEAR, AMOUNT, DATE PAID, EDIT RECORD, SAVE RECORD
     for (let i = 0 ; i < profFee.length ; i++){
-      for(let temp in profFee[i]){
-        total += temp.amount;
+        total += profFee[i].amount;
         summary += `
         <tr>
-          <td>${temp.month}</td>
-          <td>${temp.year}</td>
-          <td>${temp.amount}</td>
-          <td>${temp.datePaid}</td>
+          <td>${profFee[i].month}</td>
+          <td>${profFee[i].year}</td>
+          <td>${profFee[i].amount}</td>
+          <td>${profFee[i].datePaid}</td>
           <td><input type="button" value="EDIT" id="editProfFeeRec('${i}')"></td>
         </tr>
-        `
-      }
+        `     
     }
-    // for(let temp of profFee){
-    //   let profFeeData = temp.split(":");
-    //   total += parseInt(profFeeData[2]);
-    //   summary += `
-    //   <tr>
-    //     <td>${profFeeData[0]}</td>
-    //     <td>${profFeeData[1]}</td>
-    //     <td>${profFeeData[2]}</td>
-    //     <td>${profFeeData[3]}</td>
-    //     <td><input type="button" value="EDIT" id="editProfFeeRec"></td>
-    //   </tr>
-    //   `
-    // }
+
     summary += `
     <tr>
       <td colspan="3">TOTAL</td>
       <td>${total}</td>
     </tr>
     `
-
+    
     // display client data on browser
     display.innerHTML = `<table>
     <caption>${indexNumber} ${firstName} ${lastName} ${companyName}</caption>
@@ -127,21 +121,26 @@
       </tr>   
       ${summary}
     </table>
-    <input type="button" value="ADD RECORD" id="addProfFeeRec" onclick="addProfFeeRec('${_id},${blankData}')">`    
+    <input type="button" value="ADD RECORD" id="addProfFeeRec" onclick="addProfFeeRec('${_id}',blankData)">`   
+    // take note, blankData is referencing the variable declared on the js file. ${_id} is referencing the id from the fetch and assigned inside the function where it was declared
   }
 
   // add a blank section of record ready for edit by the user
-  async function addProfFeeRec(id,formData){
+  async function addProfFeeRec(id,update){
     // if a new record is needed
-
-    // append id to body
+    const formData = new FormData();
+    formData.append('id',id);
+    formData.append('month',update.month);
+    formData.append('year',update.year);
+    formData.append('amount',update.amount);
+    formData.append('datePaid',update.datePaid);
     const dataClient = await fetch('/client/search',{
       method: 'PUT',
-      body: blankData
+      body: formData
     })
     const parsed = await dataClient.json();
-    alert(parsed.data)
-
+    alert(parsed.data);
+    viewDetails(id);
     // if record needs to be updated, use the formData argument to pass in the values
   }
 

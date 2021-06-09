@@ -68,8 +68,21 @@ module.exports = function(app,userData){
       })
       // updates the data of the client; only prof fee for now
       .put((req,res)=>{
-        console.log(req.body)
-        res.json({data:req.body.month})
+        // console.log(req.body)
+        // res.json({data:req.body.month})
+        userData.findById(req.body.id, async (err,doc)=>{
+          if (err) {
+            res.json({data:'error on server'});
+            return;
+          }          
+          // console.log(doc)
+          const updateData = {};
+          Object.assign(updateData,req.body);
+          delete updateData.id;
+          doc.profFee.push(updateData);
+          await doc.save()
+          res.json({data:'new blank record added'});
+        })
         
       }) 
       // deletes the data of the client
