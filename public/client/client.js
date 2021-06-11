@@ -85,7 +85,7 @@ async function viewDetails(id) {
   const { companyName } = parsed;
   const { profFee } = parsed;
 
-  // set output format for display; MONTH, YEAR, AMOUNT, DATE PAID, EDIT RECORD, SAVE RECORD
+  // set output format for display; MONTH, YEAR, AMOUNT, DATE PAID, COMMANDS
   for (let i = 0; i < profFee.length; i++) {
     total += profFee[i].amount;
     editableData = JSON.stringify(profFee[i]);
@@ -153,25 +153,26 @@ async function addProfFeeRec(id, update) {
 }
 
 // MODAL SECTION
+// when update is clicked, send the form data and call function
 async function editProfFeeRec(recordIndex, recordData) {
 
   toggleButton.checked = true;
-  modalTitle.innerHTML = `Record No: ${recordIndex}`;
+  modalTitle.innerHTML = `Update Record No: ${recordIndex}`;
   modalContent.innerHTML = `
   <form class="defaultForm">
+    <label for="rcdNo">Record No:</label>
+    <input type="text" value=${recordIndex} id="rcdNo" for="rcdNo" readonly>
     <label for="month">Month</label>
-    <input type="input" value=${recordData.month} id="month" name="month>
-
+    <input type="text" value=${recordData.month} id="month" name="month>
     <label for="year">Year</label>
-    <input type="input" value=${recordData.year} id="year" name="year>  
-
+    <input type="text" value=${recordData.year} id="year" name="year>  
     <label for="datePaid">Date Paid</label>
-    <input type="input" value=${recordData.datePaid} id="datePaid" name="datePaid">
-
+    <input type="text" value=${recordData.datePaid} id="datePaid" name="datePaid">
     <label for="amount">Amount</label>
-    <input type="input" value=${recordData.amount} id="amount" name="amount">        
+    <input type="text" value=${recordData.amount} id="amount" name="amount">
   </form>
   `;
+  
 }
 
 
