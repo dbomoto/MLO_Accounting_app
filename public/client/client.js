@@ -8,7 +8,17 @@ const display = document.getElementById('dataOutput');
 
 const submitSearch = document.getElementById('formData');
 
+// for blank records
 const blankData = {
+  month: 'January',
+  year: 2000,
+  amount: 0,
+  datePaid: 'new record'
+}
+
+// for record update
+let editData = {
+  index: 0,
   month: 'January',
   year: 2000,
   amount: 0,
@@ -95,7 +105,8 @@ async function viewDetails(id) {
           <td>${profFee[i].year}</td>
           <td>${profFee[i].datePaid}</td>
           <td>${profFee[i].amount}</td>
-          <td><input type="button" value="EDIT" onclick="editProfFeeRec('${i + 1}',{
+          <td><input type="button" value="EDIT" onclick="showProfFeeRec('${i + 1}',{
+            id:'${_id}',
             month:'${profFee[i].month}',
             year:'${profFee[i].year}',
             datePaid:'${profFee[i].datePaid}',
@@ -103,7 +114,7 @@ async function viewDetails(id) {
           })"></td>
         </tr>
         `
-        // take note, in the scenario of "summary" above, you cannot set an argument that is an object with declared within the function, you have to manually make the object in order for it to be passed
+        // take note, in the scenario of "summary" above, you cannot set an argument that is an object with declared within the function, you have to manually make the object in order for it to be passed and do not set it as string
   }
 
   summary += `
@@ -128,51 +139,108 @@ async function viewDetails(id) {
       </tr>   
       ${summary}
     </table>
-    <input type="button" value="ADD RECORD" id="addProfFeeRec" onclick="addProfFeeRec('${_id}',blankData)">`
+    <input type="button" value="ADD RECORD" id="addProfFeeRec" onclick="addProfFeeRec('${_id}',blankData,true)">`
   // take note, blankData is referencing the variable declared on the js file. ${_id} is referencing the id from the fetch and assigned inside the function where it was declared
 }
 
 // add a blank section of record ready for edit by the user
-async function addProfFeeRec(id, update) {
+async function addProfFeeRec(id, update, newRec) {
   // use the formData argument to pass in the values
   const formData = new FormData();
-  formData.append('id', id);
-  formData.append('month', update.month);
-  formData.append('year', update.year);
-  formData.append('amount', update.amount);
-  formData.append('datePaid', update.datePaid);
+  // if newRec is true, indicates a new record, else edit record
+  if (newRec) {
+    formData.append('id', id);
+    formData.append('newRec', newRec);
+    formData.append('month', update.month);
+    formData.append('year', update.year);
+    formData.append('amount', update.amount);
+    formData.append('datePaid', update.datePaid);
+  } else {
+    formData.append('id', id);
+    formData.append('newRec', newRec);
+    formData.append('index', update.index);
+    formData.append('month', update.month);
+    formData.append('year', update.year);
+    formData.append('amount', update.amount);
+    formData.append('datePaid', update.datePaid);
+  }
 
   const dataClient = await fetch('/client/search', {
     method: 'PUT',
     body: formData
   })
+    const parsed = await dataClient.json();
+    alert(parsed.data);
+    viewDetails(id);    
 
-  const parsed = await dataClient.json();
-  alert(parsed.data);
-  viewDetails(id);
 }
 
 // MODAL SECTION
 // when update is clicked, send the form data and call function
-async function editProfFeeRec(recordIndex, recordData) {
+function showProfFeeRec(recordIndex, recordData) {
+  // const newRec = {};
+  // Object.assign(newRec,recordData);
+  // const newRecIndex = recordIndex;
+
+  editData.index = recordIndex;
 
   toggleButton.checked = true;
-  modalTitle.innerHTML = `Update Record No: ${recordIndex}`;
+  modalTitle.innerHTML = `Update Record`;
   modalContent.innerHTML = `
-  <form class="defaultForm">
-    <label for="rcdNo">Record No:</label>
-    <input type="text" value=${recordIndex} id="rcdNo" for="rcdNo" readonly>
+  <form class="defaultForm" id="editFormData">
+    <label for="recId">Client ID:</label>
+    <input type="text" value=${recordData.id} id="recId" for="recId" readonly> 
+    <label for="index">Record No:</label>
+    <input type="text" value=${recordIndex} id="index" for="index" readonly>
     <label for="month">Month</label>
-    <input type="text" value=${recordData.month} id="month" name="month>
+    <input type="text" value=${recordData.month} id="month" oninput="editFormData(this.value,'month')" name="month>
     <label for="year">Year</label>
-    <input type="text" value=${recordData.year} id="year" name="year>  
+    <input type="text" value=${recordData.year} id="year" oninput="editFormData(this.value,'year')" name="year>  
     <label for="datePaid">Date Paid</label>
-    <input type="text" value=${recordData.datePaid} id="datePaid" name="datePaid">
+    <input type="text" value=${recordData.datePaid} id="datePaid" oninput="editFormData(this.value,'datePaid')" name="datePaid">
     <label for="amount">Amount</label>
-    <input type="text" value=${recordData.amount} id="amount" name="amount">
+    <input type="text" value=${recordData.amount} id="amount" oninput="editFormData(this.value,'amount')" name="amount">
   </form>
-  `;
-  
+    <label class="modal-close button" for="modal-toggle">CLOSE</label>
+    <label class="modal-close button2" for="modal-toggle" onclick="addProfFeeRec('${recordData.id}', {
+    index: '${recordIndex}',
+    month: editData.month,
+    year: editData.year,
+    datePaid: editData.datePaid,
+    amount: editData.amount
+  }, false)">UPDATE</label>    
+  `
+  // the last two labels are for modal controls
+}
+
+// function editProfFeeRec() {
+//     // get form data only when update is clicked
+//   const editForm = document.getElementById('editFormData').elements;
+
+//   // use FormData for easier retrieval of data
+// //   const editData = new FormData(editForm);
+// //   const sendData = {
+// //     index: editData.get('index'),
+// //     month: editData.get('month'),
+// //     year: editData.get('year'),
+// //     datePaid: editData.get('datePaid'),
+// //     amount: editData.get('amount')
+// //   }
+// //  console.log(editData.get('index'))
+// // addProfFeeRec(editData.get('id'), sendData, false);
+// //  addProfFeeRec('test id', 'test object', false);
+
+//   let editData = {}
+//   for (let i = 0; i < editForm.length; i++){
+//     if (editForm[i].type = "label") //exclude label tags
+//     editData[editForm[i].name]=editForm[i].value;
+//   }
+
+//   console.log(editData)
+
+// }
+function editFormData(value,name){
+  editData[name] = value;
 }
 
 
