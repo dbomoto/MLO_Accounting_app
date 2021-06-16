@@ -26,28 +26,45 @@ module.exports = function(app,userData){
     app.route('/client/search')
       // searches for the clients that match
       .post((req,res)=>{
+        // *************** TEST****************
+        // $elemMatch is a query-projection operator of the latest MongoDB versions
+        if (req.body.summ == 'true'){
 
-        // prepare search parameters that adapts to what the user inputs.
-        const searchObj = {};
-        Object.assign(searchObj, req.body);
-        delete searchObj.info;
-        for (const prop in searchObj){
-          if (searchObj[prop] === ""){
-            delete searchObj[prop];
+          userData.find({profFee:{$elemMatch:{datePaid:'unpaid'}}}, (err,docs)=>{
+            if (err) {
+              res.json({data:'error on server'});
+              return;
+            }
+            res.json({data:docs})
+            return;            
+          })
+        
+        } else {
+        // *************** TEST****************      
+
+          // prepare search parameters that adapts to what the user inputs.
+          const searchObj = {};
+          Object.assign(searchObj, req.body);
+          delete searchObj.info;
+          delete searchObj.summ;
+          for (const prop in searchObj){
+            if (searchObj[prop] === ""){
+              delete searchObj[prop];
+            }
           }
-        }
 
-        // search database using parameters given by user
-        userData.find(searchObj,function(err,docs){
-          if (err) {
-            res.json({data:'error on server'});
+          // search database using parameters given by user
+          userData.find(searchObj,function(err,docs){
+            if (err) {
+              res.json({data:'error on server'});
+              return;
+            }
+            // console.log(docs)
+            res.json({data:docs})
             return;
-          }
-          // console.log(docs)
-          res.json({data:docs})
-          return;
-        })
+          })
 
+        }
         // console.log(req.body, 'body');
         // console.log(Object.keys(req.body));
         // res.json({data:'sample api response'})

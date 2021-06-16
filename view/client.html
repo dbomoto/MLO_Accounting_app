@@ -7,6 +7,7 @@
     <meta name="author" content="Daniel Benedict L. Omoto">
     <meta name="description" content="accounting app">
     <meta name="keywords" content="accounting, app, tool,">
+    <link rel="stylesheet" href="/cside/theme/mermaid.css" type="text/css">    
     <link rel="stylesheet" href="/public/client/client.css" type="text/css">
     <!-- <script src="/public/homepage/index.js"></script> -->
   </head>
@@ -57,12 +58,9 @@
     
     <!-- SUMMARY -->
     <!-- summary will adapt depending on what "info" input is chosen -->
-    <div id="summary">
-      <h4>Total Collectible</h4>
-      <p>3000</p>
-      <h4>Clients with balance</h4>
-      <p>Summarize clients with with their total</p>
-    </div>
+    <h4>Clients with balance</h4>
+    <!-- div must be empty in order for gridjs to work, as shown below -->
+    <div id="summary"></div>
 
     <!-- MODAL SECTION -->
     <div class="modal-container">
@@ -80,6 +78,7 @@
     </div>
     
   </body>
+  <script src="/cside/gridjs.umd.js"></script>  
   <script src="/public/client/client.js"></script>
 </html>
 

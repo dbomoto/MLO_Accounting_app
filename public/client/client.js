@@ -31,6 +31,7 @@ let editData = {
 // searches database for matching user querie
 async function searchClient() {
   const form = new FormData(submitSearch)
+  form.append('summ','false')
   const dataClient = await fetch('/client/search', {
     method: 'POST',
     body: form
@@ -181,7 +182,13 @@ function showProfFeeRec(recordIndex, recordData) {
   // const newRec = {};
   // Object.assign(newRec,recordData);
   // const newRecIndex = recordIndex;
-
+  editData = {
+    index: recordIndex,
+    month: recordData.month,
+    year: recordData.year,
+    amount: recordData.amount,
+    datePaid: recordData.datePaid
+  }
   editData.index = recordIndex;
 
   toggleButton.checked = true;
@@ -213,37 +220,48 @@ function showProfFeeRec(recordIndex, recordData) {
   // the last two labels are for modal controls
 }
 
-// function editProfFeeRec() {
-//     // get form data only when update is clicked
-//   const editForm = document.getElementById('editFormData').elements;
-
-//   // use FormData for easier retrieval of data
-// //   const editData = new FormData(editForm);
-// //   const sendData = {
-// //     index: editData.get('index'),
-// //     month: editData.get('month'),
-// //     year: editData.get('year'),
-// //     datePaid: editData.get('datePaid'),
-// //     amount: editData.get('amount')
-// //   }
-// //  console.log(editData.get('index'))
-// // addProfFeeRec(editData.get('id'), sendData, false);
-// //  addProfFeeRec('test id', 'test object', false);
-
-//   let editData = {}
-//   for (let i = 0; i < editForm.length; i++){
-//     if (editForm[i].type = "label") //exclude label tags
-//     editData[editForm[i].name]=editForm[i].value;
-//   }
-
-//   console.log(editData)
-
-// }
+// changes the global variable editData, and ready 
 function editFormData(value,name){
   editData[name] = value;
 }
 
 
+// SUMMARY SECTION
+// this function will display all clients with pending payments
+function summary(){
+  const form = new FormData()
+  form.append('summ','true')
+  // const dataClient = await fetch('/client/search', {
+  //   method: 'POST',
+  //   body: form
+  // })
+  // const parsed = await dataClient.json();
+  // const { summary } = parsed.data
+
+  new gridjs.Grid({
+    columns: [{name: 'ID',hidden: true},'Index','Client Name','Company Name',{
+      name: 'Commands',
+        formatter: (cell, row) => {
+          return `<button>test</button>`;
+        }     
+    } ],
+    server: {
+      url: '/client/search',
+      method: 'POST',
+      body: form,
+      then: srvRes => srvRes.data.map(clnt=>[clnt._id,clnt.indexNumber,clnt.firstName + " " + clnt.lastName,clnt.companyName]),
+      handle: (res) => {
+      // no matching records found
+      if (res.status === 404) return {data: []};
+      if (res.ok) return res.json();
+      
+      throw Error('Server or database error. Please contact admin.');
+      }
+    }
+  }).render(document.getElementById("summary"));
+}
+
+summary();
 
 
 
