@@ -1,11 +1,8 @@
-// MODAL SECTION
-const toggleButton = document.getElementById('modal-toggle')
-const modalTitle = document.getElementById('modalTitle')
-const modalContent = document.getElementById('modalContent')
-
-
+const toggleButton = document.getElementById('modal-toggle');
+const modalTitle = document.getElementById('modalTitle');
+const modalContent = document.getElementById('modalContent');
+const summaryDisp = document.getElementById('summaryWrapper');
 const display = document.getElementById('dataOutput');
-
 const submitSearch = document.getElementById('formData');
 
 // for blank records
@@ -142,6 +139,7 @@ async function viewDetails(id) {
     </table>
     <input type="button" value="ADD RECORD" id="addProfFeeRec" onclick="addProfFeeRec('${_id}',blankData,true)">`
   // take note, blankData is referencing the variable declared on the js file. ${_id} is referencing the id from the fetch and assigned inside the function where it was declared
+  
 }
 
 // add a blank section of record ready for edit by the user
@@ -170,10 +168,12 @@ async function addProfFeeRec(id, update, newRec) {
     method: 'PUT',
     body: formData
   })
-    const parsed = await dataClient.json();
-    alert(parsed.data);
-    viewDetails(id);    
-
+  const parsed = await dataClient.json();
+  alert(parsed.data);
+  // calling each function below must happen in order, or else it will conflict with each other, hence the reason for the await command.
+  await removeAllChildNodes(summaryDisp);    
+  await viewDetails(id);
+  await summaryData();
 }
 
 // MODAL SECTION
@@ -191,6 +191,33 @@ function showProfFeeRec(recordIndex, recordData) {
   }
   editData.index = recordIndex;
 
+  let monthContent = ''
+  let months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+  ]
+  // this loops is designed to placed the selected attribute on the matching month record currently be 
+  for(let i of months){
+    if(i === recordData.month){
+      monthContent += `<option value=${recordData.month} selected>${recordData.month}</option>`
+    } else {
+      monthContent += `<option value=${i}>${i}</option>`
+    }
+  }
+
+
+
+
   toggleButton.checked = true;
   modalTitle.innerHTML = `Update Record`;
   modalContent.innerHTML = `
@@ -200,7 +227,11 @@ function showProfFeeRec(recordIndex, recordData) {
     <label for="index">Record No:</label>
     <input type="text" value=${recordIndex} id="index" for="index" readonly>
     <label for="month">Month</label>
-    <input type="text" value=${recordData.month} id="month" oninput="editFormData(this.value,'month')" name="month>
+
+      <select name="month" id="month" onchange="editFormData(this.value,'month')">
+        ${monthContent}
+      </select>
+
     <label for="year">Year</label>
     <input type="text" value=${recordData.year} id="year" oninput="editFormData(this.value,'year')" name="year>  
     <label for="datePaid">Date Paid</label>
@@ -218,6 +249,22 @@ function showProfFeeRec(recordIndex, recordData) {
   }, false)">UPDATE</label>    
   `
   // the last two labels are for modal controls
+
+      // <input type="text" value=${recordData.month} id="month" oninput="editFormData(this.value,'month')" name="month>
+
+      // <option value=${recordData.month} selected>${recordData.month}</option>
+      // <option value="January">January</option>
+      // <option value="February">February</option>
+      // <option value="March">March</option>
+      // <option value="April">April</option>
+      // <option value="May">May</option>
+      // <option value="June">June</option>
+      // <option value="July">July</option>
+      // <option value="August">August</option>
+      // <option value="September">September</option>
+      // <option value="October">October</option>
+      // <option value="November">November</option>
+      // <option value="December">December</option>      
 }
 
 // changes the global variable editData, and ready 
@@ -228,7 +275,7 @@ function editFormData(value,name){
 
 // SUMMARY SECTION
 // this function will display all clients with pending payments
-function summary(){
+function summaryData(){
   const form = new FormData()
   form.append('summ','true')
   // const dataClient = await fetch('/client/search', {
@@ -238,13 +285,24 @@ function summary(){
   // const parsed = await dataClient.json();
   // const { summary } = parsed.data
 
+
+  // note here that 'gridjs.Grid' means, call gridjs js file and get the Grid function. Same concept applies to gridjs.h. You need to call gridjs everytime you need one of its functions. Whether this is only for gridjs remains to be explored.
+  
   new gridjs.Grid({
-    columns: [{name: 'ID',hidden: true},'Index','Client Name','Company Name',{
+    columns: [{name: 'ID', hidden: true},'Index','Client Name','Company Name',{
       name: 'Commands',
-        formatter: (cell, row) => {
-          return `<button>test</button>`;
-        }     
-    } ],
+      formatter: (cell, row) => {
+        return gridjs.h('button', {
+          className: 'py-2 mb-4 px-4 border rounded-md text-white bg-blue-600',
+          onClick: () => viewDetails(row.cells[0].data)
+        }, 'View Details');
+      }    
+    }],
+    pagination:{
+      enabled: true,
+      limit: 5
+    },
+    sort: true,
     server: {
       url: '/client/search',
       method: 'POST',
@@ -261,7 +319,18 @@ function summary(){
   }).render(document.getElementById("summary"));
 }
 
-summary();
+// clear summaryWrapper div since gridjs dont work on elements with content; use removeChild to remove all attributes, events, etc., then create the element again with the same attributes so that the table will render; simply removing the or using innerHTML="" will not work and causes an error.
+function removeAllChildNodes(parent) {
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
+    let div = document.createElement("DIV");
+    div.setAttribute('id','summary');
+    parent.appendChild(div);
+}
+
+// call summary to initially display clients with pending payments
+summaryData();
 
 
 

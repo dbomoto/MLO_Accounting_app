@@ -42,7 +42,7 @@ module.exports = function(app,userData){
         } else {
         // *************** TEST****************      
 
-          // prepare search parameters that adapts to what the user inputs.
+          // prepare search parameters that adapts to what the user inputs. if no search parameters is given, it will give out all the documents
           const searchObj = {};
           Object.assign(searchObj, req.body);
           delete searchObj.info;
