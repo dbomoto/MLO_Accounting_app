@@ -215,7 +215,17 @@ function showProfFeeRec(recordIndex, recordData) {
     }
   }
 
-
+  let yearsContent = '';
+  let years = [
+    '2010','2011','2012','2013','2014','2015','2016','2017','2018','2019','2020','2021','2022','2023','2024','2025','2026','2027','2028','2029','2030','2031'
+  ];
+  for(let i of years){
+    if(i === recordData.year){
+      yearsContent += `<option value=${recordData.year} selected>${recordData.year}</option>`
+    } else {
+      yearsContent += `<option value=${i}>${i}</option>`
+    }
+  }
 
 
   toggleButton.checked = true;
@@ -226,14 +236,17 @@ function showProfFeeRec(recordIndex, recordData) {
     <input type="text" value=${recordData.id} id="recId" for="recId" readonly> 
     <label for="index">Record No:</label>
     <input type="text" value=${recordIndex} id="index" for="index" readonly>
-    <label for="month">Month</label>
 
+    <label for="month">Month</label>
       <select name="month" id="month" onchange="editFormData(this.value,'month')">
         ${monthContent}
       </select>
 
-    <label for="year">Year</label>
-    <input type="text" value=${recordData.year} id="year" oninput="editFormData(this.value,'year')" name="year>  
+    <label for="year">Year</label> 
+      <select name="year" id="year" onchange="editFormData(this.value,'year')">
+        ${yearsContent}
+      </select>
+
     <label for="datePaid">Date Paid</label>
     <input type="text" value=${recordData.datePaid} id="datePaid" oninput="editFormData(this.value,'datePaid')" name="datePaid">
     <label for="amount">Amount</label>
@@ -264,7 +277,9 @@ function showProfFeeRec(recordIndex, recordData) {
       // <option value="September">September</option>
       // <option value="October">October</option>
       // <option value="November">November</option>
-      // <option value="December">December</option>      
+      // <option value="December">December</option>    
+
+    // <input type="text" value=${recordData.year} id="year" oninput="editFormData(this.value,'year')" name="year>         
 }
 
 // changes the global variable editData, and ready 
