@@ -68,10 +68,53 @@ async function searchClient() {
     </table>`
 }
 
+async function searchClient2() {
+
+// everytime a search it qued, it must remove the "dataOutputContent" element and re-added in order for gridjs to render again.
+await removeAllChildNodes(display,'dataOutputContent')
+
+const form = new FormData(submitSearch)
+form.append('summ','false')  
+
+new gridjs.Grid({
+  columns: [
+    {name: 'ID', hidden: true},
+    'Index Number',
+    'First Name',
+    'Last Name',
+    'Company Name',
+    {
+      name: 'Commands',
+      formatter: (cell, row) => {
+        return gridjs.h('button', {
+          className: 'py-2 mb-4 px-4 border rounded-md text-white bg-blue-600',
+          onClick: () => viewDetails(row.cells[0].data)
+        }, 'View Details');
+      }    
+    }
+  ],
+  server: {
+    url: '/client/search',
+    method: 'POST',
+    body: form,
+    then: srvRes => srvRes.data.map(clnt=>[clnt._id,clnt.indexNumber,clnt.firstName,clnt.lastName,clnt.companyName]),
+    handle: (res) => {
+    // no matching records found
+    if (res.status === 404) return {data: []};
+    if (res.ok) return res.json();
+    
+    throw Error('Server or database error. Please contact admin.');
+    }    
+  }
+}).render(document.getElementById('dataOutputContent'));
+// it must be in this format, document.getElementById('dataOutputContent'), if you are using a predetermined const variable selecting the element, js will not recognize it again if the element is deleted and added back with the same attributes(i.e. id). you must make js search for it again.
+
+}
+
 // replace default action of submit in form
 submitSearch.onsubmit = (e) => {
   e.preventDefault();
-  searchClient();
+  searchClient2();
 }
 
 
@@ -171,7 +214,7 @@ async function addProfFeeRec(id, update, newRec) {
   const parsed = await dataClient.json();
   alert(parsed.data);
   // calling each function below must happen in order, or else it will conflict with each other, hence the reason for the await command.
-  await removeAllChildNodes(summaryDisp);    
+  await removeAllChildNodes(summaryDisp,'summary');    
   await viewDetails(id);
   await summaryData();
 }
@@ -335,16 +378,17 @@ function summaryData(){
 }
 
 // clear summaryWrapper div since gridjs dont work on elements with content; use removeChild to remove all attributes, events, etc., then create the element again with the same attributes so that the table will render; simply removing the or using innerHTML="" will not work and causes an error.
-function removeAllChildNodes(parent) {
+function removeAllChildNodes(parent,id) {
     while (parent.firstChild) {
         parent.removeChild(parent.firstChild);
     }
     let div = document.createElement("DIV");
-    div.setAttribute('id','summary');
+    div.setAttribute('id', id);
     parent.appendChild(div);
 }
 
 // call summary to initially display clients with pending payments
+
 summaryData();
 
 
