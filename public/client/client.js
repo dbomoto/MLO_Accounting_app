@@ -4,6 +4,7 @@ const modalContent = document.getElementById('modalContent');
 const summaryDisp = document.getElementById('summaryWrapper');
 const display = document.getElementById('dataOutput');
 const submitSearch = document.getElementById('formData');
+const dataOutputCaption = document.getElementById('dataOutputCaption');
 
 // for blank records
 const blankData = {
@@ -71,7 +72,13 @@ async function searchClient() {
 async function searchClient2() {
 
 // everytime a search it qued, it must remove the "dataOutputContent" element and re-added in order for gridjs to render again.
-await removeAllChildNodes(display,'dataOutputContent')
+await removeAllChildNodes(display,'dataOutputContent');
+
+await removeAllChildNodes(dataOutputCaption,'dataCaptionContent');
+const caption = document.getElementById("dataCaptionContent");
+const captionNode = document.createElement('H4');
+captionNode.innerText = "MATCHED RECORDDS";
+caption.appendChild(captionNode); 
 
 const form = new FormData(submitSearch)
 form.append('summ','false')  
@@ -88,7 +95,7 @@ new gridjs.Grid({
       formatter: (cell, row) => {
         return gridjs.h('button', {
           className: 'py-2 mb-4 px-4 border rounded-md text-white bg-blue-600',
-          onClick: () => viewDetails(row.cells[0].data)
+          onClick: () => viewDetails2(row.cells[0].data)
         }, 'View Details');
       }    
     }
@@ -185,6 +192,81 @@ async function viewDetails(id) {
   
 }
 
+async function viewDetails2(id) {
+
+  await removeAllChildNodes(display,'dataOutputContent');
+  await removeAllChildNodes(dataOutputCaption,'dataCaptionContent');
+
+  const dataClient = await fetch(`/client/search?id=${id}`)
+  const parsed = await dataClient.json();
+  const { _id } = parsed;
+  const { indexNumber } = parsed;
+  const { firstName } = parsed;
+  const { lastName } = parsed;
+  const { companyName } = parsed;
+  const { profFee } = parsed;
+  let totalUnpaid = 0;
+  let gridData = [];
+  
+  // for (const data of profFee) {
+  //   gridData.push([_id, indexNumber, data.month,data.year,data.datePaid,data.amount])
+  // }
+
+  for (let i = 0; i < profFee.length; i++) {
+    if (profFee[i].datePaid === 'unpaid') {
+      console.log('true',i)
+      totalUnpaid += profFee[i].amount;
+    }
+    gridData.push([_id, i, profFee[i].month, profFee[i].year, profFee[i].datePaid,profFee[i].amount]);
+  }
+
+  await new gridjs.Grid({
+    columns: [
+      {
+        name: 'ID',
+        hidden: true
+      },
+      {
+        name: 'index',
+        hidden: true
+      },
+      'Month',
+      'Year',
+      'Date',
+      'Amount',
+      {
+        name: 'Commands',
+        formatter: (cell,row) => {
+          return gridjs.html(`
+            <input type="button" value="ADD RECORD" id="addProfFeeRec" onclick="addProfFeeRec('${row.cells[0].data}',blankData,true)">          
+
+            <input type="button" value="EDIT" onclick="showProfFeeRec('${row.cells[1].data + 1}',{
+            id:'${row.cells[0].data}',
+            month:'${row.cells[2].data}',
+            year:'${row.cells[3].data}',
+            datePaid:'${row.cells[4].data}',
+            amount:'${row.cells[5].data}'
+          })">             
+          `)
+        }
+      }
+    ],
+    data: gridData,
+  }).render(document.getElementById('dataOutputContent'));
+
+  // cannot include the total inside the table as it will all include the commands which can cause confusion. solution is to append an h4 element with the total unpaid prof fee.
+  const total = document.createElement('H4');
+  total.innerText = `Total Unpaid: ${totalUnpaid}`;
+  display.appendChild(total);
+
+  // a title over the tables, since gridjs does not support caption with variables
+  const caption = document.getElementById("dataCaptionContent");
+  const captionNode = document.createElement('H4');
+  captionNode.innerText = `${indexNumber} ${firstName} ${lastName} ${companyName}`;
+  caption.appendChild(captionNode); 
+
+}
+
 // add a blank section of record ready for edit by the user
 async function addProfFeeRec(id, update, newRec) {
   // use the formData argument to pass in the values
@@ -215,7 +297,7 @@ async function addProfFeeRec(id, update, newRec) {
   alert(parsed.data);
   // calling each function below must happen in order, or else it will conflict with each other, hence the reason for the await command.
   await removeAllChildNodes(summaryDisp,'summary');    
-  await viewDetails(id);
+  await viewDetails2(id);
   await summaryData();
 }
 
@@ -249,7 +331,7 @@ function showProfFeeRec(recordIndex, recordData) {
     'November',
     'December'
   ]
-  // this loops is designed to placed the selected attribute on the matching month record currently be 
+  // this loops is designed to place the selected attribute on the matching month record 
   for(let i of months){
     if(i === recordData.month){
       monthContent += `<option value=${recordData.month} selected>${recordData.month}</option>`
@@ -258,6 +340,7 @@ function showProfFeeRec(recordIndex, recordData) {
     }
   }
 
+  // this loops is designed to place the selected attribute on the matching year record 
   let yearsContent = '';
   let years = [
     '2010','2011','2012','2013','2014','2015','2016','2017','2018','2019','2020','2021','2022','2023','2024','2025','2026','2027','2028','2029','2030','2031'
@@ -344,7 +427,7 @@ function summaryData(){
   // const { summary } = parsed.data
 
 
-  // note here that 'gridjs.Grid' means, call gridjs js file and get the Grid function. Same concept applies to gridjs.h. You need to call gridjs everytime you need one of its functions. Whether this is only for gridjs remains to be explored.
+  // note here that 'gridjs.Grid' means, call gridjs js file and get the Grid function. Same concept applies to gridjs.h. You need to call gridjs everytime you need one of its functions. Whether this is only for gridjs remains to be explored. Update: this is exclusive to gridjs umd type.
   
   new gridjs.Grid({
     columns: [{name: 'ID', hidden: true},'Index','Client Name','Company Name',{
@@ -352,7 +435,7 @@ function summaryData(){
       formatter: (cell, row) => {
         return gridjs.h('button', {
           className: 'py-2 mb-4 px-4 border rounded-md text-white bg-blue-600',
-          onClick: () => viewDetails(row.cells[0].data)
+          onClick: () => viewDetails2(row.cells[0].data)
         }, 'View Details');
       }    
     }],

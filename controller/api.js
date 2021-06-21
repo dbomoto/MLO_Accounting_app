@@ -116,6 +116,7 @@ module.exports = function(app,userData){
             delete updateData.id;
             delete updateData.newRec;
             delete updateData.index
+            // regarding "req.body.index - 1", at this point in time, I did not know that sub-documents will also have their own unique ID's
             doc.profFee[req.body.index - 1] = updateData;
             await doc.save()
             res.json({data:'record updated'});
