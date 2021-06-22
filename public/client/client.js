@@ -112,7 +112,12 @@ new gridjs.Grid({
     
     throw Error('Server or database error. Please contact admin.');
     }    
-  }
+  },
+  pagination:{
+    enabled: true,
+    limit: 5
+  },
+  sort: true  
 }).render(document.getElementById('dataOutputContent'));
 // it must be in this format, document.getElementById('dataOutputContent'), if you are using a predetermined const variable selecting the element, js will not recognize it again if the element is deleted and added back with the same attributes(i.e. id). you must make js search for it again.
 
@@ -252,6 +257,11 @@ async function viewDetails2(id) {
       }
     ],
     data: gridData,
+    pagination:{
+      enabled: true,
+      limit: 5
+    },
+    sort: true    
   }).render(document.getElementById('dataOutputContent'));
 
   // cannot include the total inside the table as it will all include the commands which can cause confusion. solution is to append an h4 element with the total unpaid prof fee.
@@ -374,7 +384,8 @@ function showProfFeeRec(recordIndex, recordData) {
       </select>
 
     <label for="datePaid">Date Paid</label>
-    <input type="text" value=${recordData.datePaid} id="datePaid" oninput="editFormData(this.value,'datePaid')" name="datePaid">
+    <input type="date" value=${recordData.datePaid} id="datePaid" oninput="editFormData(this.value,'datePaid')" name="datePaid">
+
     <label for="amount">Amount</label>
     <input type="text" value=${recordData.amount} id="amount" oninput="editFormData(this.value,'amount')" name="amount">
   </form>
