@@ -11,7 +11,7 @@ const blankData = {
   month: 'January',
   year: 2000,
   amount: 0,
-  datePaid: 'new record'
+  datePaid: 'unpaid'
 }
 
 // for record update
@@ -219,7 +219,7 @@ async function viewDetails2(id) {
 
   for (let i = 0; i < profFee.length; i++) {
     if (profFee[i].datePaid === 'unpaid') {
-      console.log('true',i)
+      // console.log('true',i)
       totalUnpaid += profFee[i].amount;
     }
     gridData.push([_id, i, profFee[i].month, profFee[i].year, profFee[i].datePaid,profFee[i].amount]);

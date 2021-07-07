@@ -24,6 +24,7 @@
     "gridjs": "^5.0.2",
     "mongodb": "^3.6.6",
     "mongoose": "^5.12.7",
-    "multer": "^1.4.2"
+    "multer": "^1.4.2",
+    "print-js": "^1.6.0"
   }
 }
