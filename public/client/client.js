@@ -92,12 +92,19 @@ new gridjs.Grid({
     'Company Name',
     {
       name: 'Commands',
-      formatter: (cell, row) => {
-        return gridjs.h('button', {
-          className: 'py-2 mb-4 px-4 border rounded-md text-white bg-blue-600',
-          onClick: () => viewDetails2(row.cells[0].data)
-        }, 'View Details');
-      }    
+      formatter: (cell,row) => {
+        return gridjs.html(`
+        <input type="button" onclick="viewDetails2('${row.cells[0].data}')" value="View Details">
+
+        <input type="button" onclick="deleteClient('${row.cells[0].data}')" value="Delete Client">
+        `)
+      }
+      // formatter: (cell, row) => {         
+      //   return  gridjs.h('button', {
+      //     className: 'py-2 mb-4 px-4 border rounded-md text-white bg-blue-600',
+      //     onClick: () => viewDetails2(row.cells[0].data)
+      //     }, 'View Details');
+      // }    
     }
   ],
   server: {
@@ -212,6 +219,20 @@ async function viewDetails2(id) {
   const { profFee } = parsed;
   let totalUnpaid = 0;
   let gridData = [];
+  let months = [
+  {date: 'January', value: 1},
+  {date: 'February', value: 2},
+  {date: 'March', value: 3},
+  {date: 'April', value: 4},
+  {date: 'May', value: 5},
+  {date: 'June', value: 6},
+  {date: 'July', value: 7},
+  {date: 'August', value: 8},
+  {date: 'September', value: 9},
+  {date: 'October', value: 10},
+  {date: 'November', value: 11},
+  {date: 'December', value: 12},
+  ]
   
   // for (const data of profFee) {
   //   gridData.push([_id, indexNumber, data.month,data.year,data.datePaid,data.amount])
@@ -235,9 +256,35 @@ async function viewDetails2(id) {
         name: 'index',
         hidden: true
       },
-      'Month',
+      {
+        name: 'Month',
+        sort: {
+          compare: (a,b) => {
+            let m1 = 0;
+            let m2 = 0;
+
+            for (const objMonths of months) {
+              if (objMonths.date === a) {
+                m1 = objMonths.value;
+              }
+              if (objMonths.date === b) {
+                m2 = objMonths.value
+              };
+            }
+
+            if (m1 > m2) {
+              return 1
+            } else if (m1 < m2) {
+              return -1
+            } else {
+              return 0
+            }
+
+          }
+        }
+      },
       'Year',
-      'Date',
+      'Date Paid',
       'Amount',
       {
         name: 'Commands',
@@ -253,7 +300,8 @@ async function viewDetails2(id) {
             amount:'${row.cells[5].data}'
           })">             
           `)
-        }
+        },
+        sort: {enabled: false},
       }
     ],
     data: gridData,
@@ -281,6 +329,7 @@ async function viewDetails2(id) {
 async function addProfFeeRec(id, update, newRec) {
   // use the formData argument to pass in the values
   const formData = new FormData();
+  let testDatePaid = update.datePaid.search(/(\d\d\d\d)-(\d\d)-(\d\d)/g)
   // if newRec is true, indicates a new record, else edit record
   if (newRec) {
     formData.append('id', id);
@@ -296,7 +345,12 @@ async function addProfFeeRec(id, update, newRec) {
     formData.append('month', update.month);
     formData.append('year', update.year);
     formData.append('amount', update.amount);
-    formData.append('datePaid', update.datePaid);
+    // detect if datePaid is a date, if not change to 'unpaid'
+    if (testDatePaid !== -1){
+      formData.append('datePaid', update.datePaid);
+    } else {
+      formData.append('datePaid', 'unpaid')
+    }    
   }
 
   const dataClient = await fetch('/client/search', {
@@ -448,7 +502,8 @@ function summaryData(){
           className: 'py-2 mb-4 px-4 border rounded-md text-white bg-blue-600',
           onClick: () => viewDetails2(row.cells[0].data)
         }, 'View Details');
-      }    
+      },
+      sort: {enabled: false}    
     }],
     pagination:{
       enabled: true,
@@ -482,6 +537,17 @@ function removeAllChildNodes(parent,id) {
 }
 
 // call summary to initially display clients with pending payments
+
+async function deleteClient(id) {
+  // prompt client if they are sure to delete
+  const dataClient = await fetch(`/client?id=${id}`, {
+    method: 'DELETE'
+  })
+  const parsed = await dataClient.json();
+  alert(parsed.data);  
+  // refresh client list after delete
+  searchClient2();
+}
 
 summaryData();
 

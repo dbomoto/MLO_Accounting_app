@@ -14,6 +14,24 @@ module.exports = function(app,userData){
           res.sendFile(path.join(process.cwd() + '/view/client.html'));
           return
       })
+      // deletes the client record
+      .delete((req,res)=>{
+        // console.log(req.query.id)
+        userData.deleteOne({_id: req.query.id},function(err,mongooseDeleteResult){
+          // console.log(mongooseDeleteResult);
+          if (mongooseDeleteResult.deletedCount === 1){
+            if (err) {
+              res.json({data:'error on server'});
+              return;
+            }
+            // console.log(docs)
+            res.json({data:'Client record successfully deleted.'})
+            return;
+          } else {
+            res.json({data:'error on server'})
+          }
+        })         
+      })
 
   // sends the add client page
     app.route('/add')
@@ -125,7 +143,7 @@ module.exports = function(app,userData){
         }
         
       }) 
-      // deletes the data of the client
+      // deletes a record of the client
       .delete((req,res)=>{
         
       })
