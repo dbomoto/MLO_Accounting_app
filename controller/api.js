@@ -155,7 +155,12 @@ module.exports = function(app,userData){
 
         // if successfull
         const newClient = new userData(req.body);
-        newClient.profFee = [];
+        newClient.profFee = [{
+          month: 'January',
+          year: 2000,
+          amount: 0,
+          datePaid: 'unpaid'          
+        }];
         newClient.save((err,doc)=>{
           if (err) {
             res.json({message: 'Error on saving new client.'});

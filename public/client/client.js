@@ -346,11 +346,11 @@ async function addProfFeeRec(id, update, newRec) {
     formData.append('year', update.year);
     formData.append('amount', update.amount);
     // detect if datePaid is a date, if not change to 'unpaid'
-    if (testDatePaid !== -1){
+    // if (testDatePaid !== -1){
       formData.append('datePaid', update.datePaid);
-    } else {
-      formData.append('datePaid', 'unpaid')
-    }    
+    // } else {
+    //   formData.append('datePaid', 'unpaid')
+    // }    
   }
 
   const dataClient = await fetch('/client/search', {
@@ -438,7 +438,14 @@ function showProfFeeRec(recordIndex, recordData) {
       </select>
 
     <label for="datePaid">Date Paid</label>
-    <input type="date" value=${recordData.datePaid} id="datePaid" oninput="editFormData(this.value,'datePaid')" name="datePaid">
+    <input type="date" value=${recordData.datePaid} id="datePaid" oninput="editFormData(this.value,'datePaid')" name="datePaid"><br>
+
+    <div style="display:flex;">
+    <input type="radio" id="noDate" name="otherReasons" value="No Date Indicated" onclick="editFormData(this.value,'datePaid')">
+    <label for="noDate">No Date Indicated</label><br>  
+    <input type="radio" id="unpaid" name="otherReasons" value="unpaid" onclick="editFormData(this.value,'datePaid')">
+    <label for="unpaid">Unpaid</label><br>
+    </div>      
 
     <label for="amount">Amount</label>
     <input type="text" value=${recordData.amount} id="amount" oninput="editFormData(this.value,'amount')" name="amount">
