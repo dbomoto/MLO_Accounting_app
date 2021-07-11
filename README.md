@@ -1,5 +1,16 @@
 # MLO_Accounting_app
 
+### To Do List:
+- Move modal: if mouse is placed at the bottom, the modal is actually clickable, either disable this or move the modal below.
+- "Edit Client Data" *New Function*: if ever the user needs to change the client name, last name, etc.
+- "Add Client" function: Detect if information entered on all inputs already exists.
+- "Confirm": in each post, put, get, delete request to the server, confirm it first if it exists before actually performing the operation to avoid data errors.
+
+- "Backup": every year the database must be backed-up and have a blank record for each client; user can view the backed up file by loading it from the google drive, or uploading it.
+- "Documentation": on each function describe the type and format for function arguments
+
+- "Custom Domain": try adding a custom domain after buying it.
+
 
 ### Purpose of app
 - Accounting application for private use.

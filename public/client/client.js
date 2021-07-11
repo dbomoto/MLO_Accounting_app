@@ -69,7 +69,7 @@ async function searchClient() {
     </table>`
 }
 
-async function searchClient2() {
+async function searchClient2(cb) {
 
 // everytime a search it qued, it must remove the "dataOutputContent" element and re-added in order for gridjs to render again.
 await removeAllChildNodes(display,'dataOutputContent');
@@ -127,6 +127,13 @@ new gridjs.Grid({
   sort: true  
 }).render(document.getElementById('dataOutputContent'));
 // it must be in this format, document.getElementById('dataOutputContent'), if you are using a predetermined const variable selecting the element, js will not recognize it again if the element is deleted and added back with the same attributes(i.e. id). you must make js search for it again.
+
+// confirms if callback is present; when present it must be called;
+  if (cb) {
+    cb();
+  } else {
+    return;
+  }
 
 }
 
@@ -488,7 +495,11 @@ function editFormData(value,name){
 
 // SUMMARY SECTION
 // this function will display all clients with pending payments
-function summaryData(){
+async function summaryData(){
+
+  // neede for gridjs to refresh data;
+  await removeAllChildNodes(summaryWrapper,"summary");
+
   const form = new FormData()
   form.append('summ','true')
   // const dataClient = await fetch('/client/search', {
@@ -547,13 +558,19 @@ function removeAllChildNodes(parent,id) {
 
 async function deleteClient(id) {
   // prompt client if they are sure to delete
+  if (confirm('All related records will be deleted. Are you sure you want to delete this client?')){
   const dataClient = await fetch(`/client?id=${id}`, {
     method: 'DELETE'
   })
   const parsed = await dataClient.json();
   alert(parsed.data);  
   // refresh client list after delete
-  searchClient2();
+
+  // calling each function below must happen in order, or else it will conflict with each other, hence the reason for the await command.
+  await searchClient2(summaryData);
+  } else {
+    return;
+  }
 }
 
 summaryData();
