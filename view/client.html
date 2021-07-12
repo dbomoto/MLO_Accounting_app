@@ -15,6 +15,7 @@
     <!-- <script src="/public/homepage/index.js"></script> -->
   </head>
   <body>
+
     <!-- SEARCH FORM -->
     <div id="searchForm">
       <form id="formData" name="formData">
@@ -54,8 +55,8 @@
     </div>
 
     <!-- MODAL SECTION -->
-    <div class="modal-container">
-      <input id="modal-toggle" type="checkbox">
+    <div class="modal-container toggleDisplayModal" id="modal-container">
+      <input id="modal-toggle" type="checkbox" onchange="displayModal()">
       <div class="modal-backdrop">
         <div class="modal-content">
           <label class="modal-close" for="modal-toggle">x</label>
@@ -68,6 +69,7 @@
       </div>
     </div>
     
+
   </body>
   <script src="/cside/gridjs/dist/gridjs.umd.js"></script>
   <script src="/cside/print-js/dist/print.js"></script>  

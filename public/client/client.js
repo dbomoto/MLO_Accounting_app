@@ -374,10 +374,13 @@ async function addProfFeeRec(id, update, newRec) {
 
 // MODAL SECTION
 // when update is clicked, send the form data and call function
-function showProfFeeRec(recordIndex, recordData) {
+async function showProfFeeRec(recordIndex, recordData) {
   // const newRec = {};
   // Object.assign(newRec,recordData);
   // const newRecIndex = recordIndex;
+
+  await displayModal();
+
   editData = {
     index: recordIndex,
     month: recordData.month,
@@ -571,6 +574,13 @@ async function deleteClient(id) {
   } else {
     return;
   }
+}
+
+// this is used to toggle the Modal on/off since it is still clickable if present on the HTML
+async function displayModal() {
+  // console.log('here');
+  const tagModal = document.getElementById("modal-container");
+  await tagModal.classList.toggle("toggleDisplayModal")
 }
 
 summaryData();

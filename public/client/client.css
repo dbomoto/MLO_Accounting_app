@@ -120,6 +120,10 @@ MODAL SECTION
 
 .modal-container #modal-toggle:checked ~ .modal-backdrop .modal-content .modal-close:hover { color: #333; }
 
+/* this is used to toggle the Modal on/off since it is still clickable if present on the HTML */
+.toggleDisplayModal {
+  display: none;
+}
 
 /*  
 dataOutput Section
