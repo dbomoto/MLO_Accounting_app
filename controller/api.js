@@ -38,7 +38,7 @@ module.exports = function(app,userData){
       .get(function(req,res){
           res.sendFile(path.join(process.cwd() + '/view/addclient.html'));
           return
-      })   
+      }) 
 
   // route for client requests
     app.route('/client/search')
@@ -149,7 +149,19 @@ module.exports = function(app,userData){
       })
 
   // route for add client requests
-    app.route('/add/client')  
+    app.route('/add/client')
+    // displays all the clients currently on the database
+      .get((req,res)=>{
+        userData.find({},function(err,docs){
+          if (err) {
+            res.json({data:'error on server'});
+            return;
+          }
+          // console.log(docs)
+          res.json({data:docs})
+          return;
+        })
+      })  
     // adds the client to the database
       .post((req,res)=>{
 
@@ -168,5 +180,9 @@ module.exports = function(app,userData){
         res.json({message: 'Client successfully added'});
         })
         
+      })
+      // updated request on the modal of edit client metadata 
+      .put((req,res)=>{
+
       })         
 }

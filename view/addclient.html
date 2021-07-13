@@ -7,6 +7,7 @@
     <meta name="author" content="Daniel Benedict L. Omoto">
     <meta name="description" content="accounting app">
     <meta name="keywords" content="accounting, app, tool,">
+    <link rel="stylesheet" href="/cside/gridjs/dist/theme/mermaid.css" type="text/css">
     <link rel="stylesheet" href="/public/addclient/addclient.css" type="text/css">
   </head>
   <body>
@@ -25,9 +26,32 @@
         <br>
         <input type="reset">
       </form>
-      <br>
+        
+      <!-- <br>
       <p>Server Response</p>
-      <div id="serverResponse"></div>
+      <div id="serverResponse"></div> -->
+
+      <!-- display here all clients currently on the database; command to edit is present on the table; editting will be dispayed on the modal -->      
+      <div id="clientDataContainer">
+        <div id="clientData"></div>
+      </div>
+
+    <!-- MODAL SECTION -->
+    <div class="modal-container toggleDisplayModal" id="modal-container">
+      <input id="modal-toggle" type="checkbox" onchange="displayModal()">
+      <div class="modal-backdrop">
+        <div class="modal-content">
+          <label class="modal-close" for="modal-toggle">x</label>
+          <h2 id="modalTitle">Modal title</h2>
+          <hr />
+          <p id="modalContent">Modal Content</p>
+          <!-- <label class="modal-close button" for="modal-toggle">CLOSE</label>
+          <label class="modal-close button2" for="modal-toggle" onclick="editProfFeeRec()">UPDATE</label> -->
+        </div>
+      </div>
+    </div>
+    
   </body>
+  <script src="/cside/gridjs/dist/gridjs.umd.js"></script>
   <script src="/public/addclient/addclient.js"></script>
 </html>  
