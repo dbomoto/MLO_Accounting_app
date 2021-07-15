@@ -150,7 +150,7 @@ module.exports = function(app,userData){
 
   // route for add client requests
     app.route('/add/client')
-    // displays all the clients currently on the database
+      // displays all the clients currently on the database
       .get((req,res)=>{
         userData.find({},function(err,docs){
           if (err) {
@@ -162,27 +162,250 @@ module.exports = function(app,userData){
           return;
         })
       })  
-    // adds the client to the database
-      .post((req,res)=>{
+      // adds the client to the database
+      .post(async (req,res)=>{
 
-        // if successfull
-        const newClient = new userData(req.body);
-        newClient.profFee = [{
-          month: 'January',
-          year: 2000,
-          amount: 0,
-          datePaid: 'unpaid'          
-        }];
-        newClient.save((err,doc)=>{
-          if (err) {
-            res.json({message: 'Error on saving new client.'});
-          }
-        res.json({message: 'Client successfully added'});
-        })
+          // USE findOne INSTEAD OF exists
+          // console.log(req.body, 'request')
+         
+          // if (await userData.exists({indexNumber: new RegExp(`${req.body.indexNumber}`)})){
+          //   console.log('IN exists')
+          //   res.json({message: 'Client already exists', refresh: false});
+          //   return            
+          // } else {
+          //   console.log('IN is unique')
+
+
+          //  indexNumber must be unique; firstName, lastName, companyName altogether must be unique.
+          // confirm first if indexNumber already exists
+          userData.findOne({indexNumber: req.body.indexNumber},(err,doc)=>{
+            if (doc) {
+              res.json({message: 'Index Number already used.', refresh: false});
+              return 
+            } else {
+              // confirm is client already exists on the database excluding index#
+              userData.findOne({
+                firstName: req.body.firstName, 
+                lastName: req.body.lastName, 
+                companyName: req.body.companyName
+              },(err,doc2)=>{
+                if (doc2) {
+                  res.json({message: 'Client already exists', refresh: false});
+                  return
+                } else {
+                  // if client is not repeated
+                  const newClient = new userData(req.body);
+                  newClient.profFee = [{
+                    month: 'January',
+                    year: 2000,
+                    amount: 0,
+                    datePaid: 'unpaid'          
+                  }];
+                  newClient.save((err,doc)=>{
+                    if (err) {
+                      res.json({message: 'Error on saving new client.'});
+                      return
+                    }
+                  res.json({message: 'Client successfully added', refresh: true});
+                  return
+                  })            
+                }
+              })
+            }
+          })
+
+          // }
         
       })
       // updated request on the modal of edit client metadata 
       .put((req,res)=>{
+            // console.log(req.body, 'request body')
+        
+        
+        userData.findById(req.body.clientID,(err,docOriginal)=>{
+          // if user want to change the index Number
+          if(`${docOriginal.indexNumber}`.localeCompare(req.body.clientIN) != 0){
+            // check if user input of index number is unique
+            userData.findOne({indexNumber: req.body.clientIN}, (err,doc)=>{
+              if (doc) {
+                res.json({message: 'Index number already used', refresh: false});
+                return                  
+              } else {
+                
+                // check if client exists
+                userData.findOne({                  
+                  firstName: req.body.clientFN, 
+                  lastName: req.body.clientLN, 
+                  companyName: req.body.clientCN
+                },(err,doc)=>{
+                  if (doc) {
 
-      })         
+                    userData.findByIdAndUpdate(req.body.clientID, {
+                      $set: {
+                        indexNumber: req.body.clientIN,
+                        firstName: req.body.clientFN,
+                        lastName: req.body.clientLN,
+                        companyName: req.body.clientCN          
+                      }
+                    },(err,doc)=>{
+                      if (err) {
+                          res.json({message: 'Error on saving new client.'});
+                        }
+                      res.json({message: 'Client record succesfully updated.', refresh: true})   
+                    }
+                  )                     
+                    // res.json({message: 'Client already exists', refresh: false});
+                    // return 
+
+                  } else {
+                  
+                    userData.findByIdAndUpdate(req.body.clientID, {
+                      $set: {
+                        indexNumber: req.body.clientIN,
+                        firstName: req.body.clientFN,
+                        lastName: req.body.clientLN,
+                        companyName: req.body.clientCN          
+                      }
+                    },(err,doc)=>{
+                      if (err) {
+                          res.json({message: 'Error on saving new client.'});
+                        }
+                      res.json({message: 'Client record succesfully updated.', refresh: true})   
+                    }
+                  )    
+                             
+                  }             
+                }) 
+                
+              }
+            })
+          } else {
+          // use current indexNumber
+          // check if client exists
+            userData.findOne({
+              firstName: req.body.clientFN, 
+              lastName: req.body.clientLN, 
+              companyName: req.body.clientCN
+            },(err,doc)=>{
+              if (doc) {
+                res.json({message: 'No changes on current record', refresh: false});
+                return                 
+              } else {
+                userData.findByIdAndUpdate(req.body.clientID, {
+                  $set: {
+                    firstName: req.body.clientFN,
+                    lastName: req.body.clientLN,
+                    companyName: req.body.clientCN            
+                  }
+                },(err,doc)=>{
+                  if (err) {
+                      res.json({message: 'Error on saving new client.'});
+                    }
+                  res.json({message: 'Client record succesfully updated.', refresh: true})   
+                }
+               )                                                
+              }             
+            })
+          }
+        })
+
+
+
+
+            // confirm is client already exists on the database excluding index#
+            // userData.findOne({
+            //     firstName: req.body.clientFN, 
+            //     lastName: req.body.clientLN, 
+            //     companyName: req.body.clientCN
+            //   },(err,doc)=>{
+            //     // console.log(`${doc.indexNumber}`.localeCompare(req.body.clientIN))
+            //     // console.log(doc.indexNumber,req.body.clientIN)
+            //     console.log(doc,'doc visiblity 1')
+            //     if (doc) {
+            //       res.json({message: 'Client already exists', refresh: false});
+            //       return                   
+            //     } else {
+            //       // disregard if index input is unchanged
+            //       console.log(doc,'doc visiblity 2')
+            //       if ((`${doc.indexNumber}`.localeCompare(req.body.clientIN)) != 0){
+            //         // user wants to change indexNumber
+            //         // confirm first if indexNumber already exists
+            //         userData.findOne({
+            //           indexNumber: req.body.clientIN
+            //         }, (err,doc2)=>{
+            //               if (doc2) {
+            //                 res.json({message: 'Index Number already used.', refresh: false});
+            //                 return 
+            //               } else {
+            //                 userData.findByIdAndUpdate(req.body.clientID, {
+            //                     $set: {
+            //                       indexNumber: req.body.clientIN,
+            //                       firstName: req.body.clientFN,
+            //                       lastName: req.body.clientLN,
+            //                       companyName: req.body.clientCN            
+            //                     }
+            //                   },(err,doc)=>{
+            //                     if (err) {
+            //                         res.json({message: 'Error on saving new client.'});
+            //                         return
+            //                       }
+            //                     res.json({
+            //                       message: 'Client record succesfully updated.', refresh: true})   
+            //                       return
+            //                 })                        
+            //               }
+            //           })         
+
+            //       }else{
+            //         // indexNumber was not changed by user
+            //         userData.findByIdAndUpdate(req.body.clientID, {
+            //             $set: {
+            //               indexNumber: req.body.clientIN,
+            //               firstName: req.body.clientFN,
+            //               lastName: req.body.clientLN,
+            //               companyName: req.body.clientCN            
+            //             }
+            //           },(err,doc)=>{
+            //             if (err) {
+            //                 res.json({message: 'Error on saving new client.'});
+            //                 return
+            //               }
+            //             res.json({
+            //               message: 'Client record succesfully updated.', refresh: true})   
+            //               return
+            //         })
+            //       }
+            //     }
+            //     })
+      })  
+
+          // }
+        // })
+
+
+        // }
+
+      // WORKING CODE
+      //   userData.findByIdAndUpdate(req.body.clientID, {
+      //     $set: {
+      //       indexNumber: req.body.clientIN,
+      //       firstName: req.body.clientFN,
+      //       lastName: req.body.clientLN,
+      //       companyName: req.body.clientCN            
+      //     }
+      //   },(err,doc)=>{
+      //     if (err) {
+      //         res.json({message: 'Error on saving new client.'});
+      //       }
+      //     res.json({
+      //       message: 'Client record succesfully changed to:',
+      //       indexNumber: req.body.clientIN,
+      //       firstName: req.body.clientFN,
+      //       lastName: req.body.clientLN,
+      //       companyName: req.body.clientCN
+      //     })   
+      //   }
+      //  )
+
+      // })          
 }

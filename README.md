@@ -1,13 +1,14 @@
 # MLO_Accounting_app
 
 ### To Do List:
-- "Edit Client Data" *New Function*: if ever the user needs to change the client name, last name, etc.
-- "Add Client" function: Detect if information entered on all inputs already exists.
-- "Confirm": in each post, put, get, delete request to the server, confirm it first if it exists before actually performing the operation to avoid data errors.
-- "Add record" detect: if a month/s is skipped on the client records, notify the user via unpaid balance.
+- client page: in each post, put, get, delete request to the server, confirm it first if it exists before actually performing the operation to avoid data errors.
+
+- client page: if a month/s is skipped on the client records, notify the user via unpaid balance.
+
 - Add a print ready format of the index with the unpaid client data records. It must also be downloadable as PDF.
 
 - "Backup": every year the database must be backed-up and have a blank record for each client; user can view the backed up file by loading it from the google drive, or uploading it.
+
 - "Documentation": on each function describe the type and format for function arguments
 
 - "Custom Domain": try adding a custom domain after buying it.

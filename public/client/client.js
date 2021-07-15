@@ -299,7 +299,7 @@ async function viewDetails2(id) {
           return gridjs.html(`
             <input type="button" value="ADD RECORD" id="addProfFeeRec" onclick="addProfFeeRec('${row.cells[0].data}',blankData,true)">          
 
-            <input type="button" value="EDIT" onclick="showProfFeeRec('${row.cells[1].data + 1}',{
+            <input type="button" value="EDIT RECORD" onclick="showProfFeeRec('${row.cells[1].data + 1}',{
             id:'${row.cells[0].data}',
             month:'${row.cells[2].data}',
             year:'${row.cells[3].data}',

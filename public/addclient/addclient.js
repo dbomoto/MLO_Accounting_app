@@ -6,7 +6,7 @@ window.onload = function() {
   }
 
   displayClients();
-  displayModal();
+  // displayModal();
 
 }
 
@@ -30,13 +30,19 @@ window.onload = function() {
     // setTimeout(()=>{
     // display.innerHTML = `<p>Waiting user action.<p>`
     // },5000)
+
+    // refreshe the table of clients depending on result
+    if (parsed.refresh) {
+      await removeAllChildNodes(clientDataContainer,'clientData');
+      await displayClients();
+    }
   }
 
 // displays all the clients currently on the database
   async function displayClients() { 
     // reset ***
-    const tagModal = document.getElementById("modal-container");
-    tagModal.classList.remove("toggleDisplayModal")  
+    // const tagModal = document.getElementById("modal-container");
+    // tagModal.classList.remove("toggleDisplayModal")  
     // *** reset
 
     new gridjs.Grid({
@@ -55,7 +61,7 @@ window.onload = function() {
             return gridjs.h('button', {
               className: 'py-2 mb-4 px-4 border rounded-md text-white bg-blue-600',
               onClick: () => editClient([row.cells[0].data,row.cells[1].data,row.cells[2].data,row.cells[3].data,row.cells[4].data])
-            }, 'Edit')          
+            }, 'Edit Client Data')          
           },
           sort: false
         }  
@@ -89,10 +95,10 @@ window.onload = function() {
     const clientID = rowData[0];
     const clientIN = rowData[1];
     const clientFN = rowData[2];
-    const clientLS = rowData[3];
+    const clientLN = rowData[3];
     const clientCN = rowData[4];
 
-    // console.log(clientID,clientIN,clientFN,clientLS,clientCN)
+    // console.log(clientID,clientIN,clientFN,clientLN,clientCN)
     // correct here
 
     await displayModal();
@@ -115,13 +121,13 @@ window.onload = function() {
       <input type="text" value='${clientID}' id="clientID" for="clientID" name="clientID" readonly> 
 
       <label for="clientIN">Index No:</label>
-      <input type="text" value='${clientIN}' id="clientIN" for="clientIN" name="clientIN">
+      <input type="text" id="clientIN" for="clientIN" name="clientIN" value='${clientIN}'>    
 
       <label for="clientFN">First Name</label>
       <input type="text" value='${clientFN}' id="clientFN" for="clientFN" name="clientFN">
 
-      <label for="clientLS">Last Name</label>
-      <input type="text" value='${clientLS}' id="clientLS" for="clientLS" name="clientLS">
+      <label for="clientLN">Last Name</label>
+      <input type="text" value='${clientLN}' id="clientLN" for="clientLN" name="clientLN">
     
       <label for="clientCN">Company Name</label>
       <input type="text" value='${clientCN}' id="clientCN" for="clientCN" name="clientCN">
@@ -156,19 +162,33 @@ async function displayModal() {
 // sends a request to update the chosen client metadata 
 async function updateMetaData(inputData) {
     // closes the modal
-    await displayModal()  
+    // await displayModal() 
+
   // console.log(id,inputData.get('clientFN'))
-    const clientID = inputData.get('clientID');
-    const clientIN = inputData.get('clientIN');
-    const clientFN = inputData.get('clientFN');
-    const clientLS = inputData.get('clientLS');
-    const clientCN = inputData.get('clientCN');
+    // const clientID = inputData.get('clientID');
+    // const clientIN = inputData.get('clientIN');
+    // const clientFN = inputData.get('clientFN');
+    // const clientLN = inputData.get('clientLN');
+    // const clientCN = inputData.get('clientCN');
 
-    console.log(clientID,clientIN,clientFN,clientLS,clientCN)
+    // console.log(clientID,clientIN,clientFN,clientLN,clientCN)
 
+
+  // inputData is already in form formatter, pass it immediately
+    const dataClient = await fetch('/add/client', {
+      method: 'PUT',
+      body: inputData
+    })
+    const parsed = await dataClient.json();  
     
-    // needed for gridjs to refresh
-    await removeAllChildNodes(clientDataContainer,'clientData');
-    // call this, to refresh the current client list
-    await displayClients();    
+    alert(parsed.message);
+
+    // refreshe the table of clients depending on result
+    if (parsed.refresh) {
+      // needed for gridjs to refresh
+      await removeAllChildNodes(clientDataContainer,'clientData');
+      // call this, to refresh the current client list
+      await displayClients();       
+    }
+   
 }
