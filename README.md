@@ -5,8 +5,6 @@
 
 - client page: if a month/s is skipped on the client records, notify the user via unpaid balance.
 
-- Add a print ready format of the index with the unpaid client data records. It must also be downloadable as PDF.
-
 - "Backup": every year the database must be backed-up and have a blank record for each client; user can view the backed up file by loading it from the google drive, or uploading it.
 
 - "Documentation": on each function describe the type and format for function arguments

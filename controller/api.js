@@ -1,4 +1,14 @@
-const path = require('path')
+const path = require('path');
+const ejs = require('ejs');
+const fs = require('fs');
+
+// SOURCE: https://www.w3resource.com/javascript-exercises/javascript-math-exercise-39.php
+function commaStyle(num)
+  {
+    var num_parts = num.toString().split(".");
+    num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return num_parts.join(".");
+  }
 
 module.exports = function(app,userData){
   // sends the home page
@@ -7,6 +17,51 @@ module.exports = function(app,userData){
           res.sendFile(path.join(process.cwd() + '/view/homepage.html'));
           return
       })
+
+  // sends the print page
+    app.route('/print')
+    // request parameters: 'id' - show index page for print
+      .get((req,res)=>{
+        switch(req.query.need){
+          case 'show':         
+            res.sendFile(path.join(process.cwd() + `/view/printpage.html`));           
+            break;
+          case 'record':
+            userData.findById(req.query.id,(err,doc)=>{
+              if (err) {
+                res.json({data:'error on server'});
+                return;
+              }              
+              let unpaidRec = [];
+              let total = 0;
+              for(let temp of doc.profFee){
+                if(temp.datePaid === 'unpaid'){
+                  unpaidRec.push(temp);
+                  total+=parseInt(temp.amount);
+                }
+              }
+              unpaidRec.push({
+                month: 'Total',
+                year: 'due:',
+                datePaid: 'unpaid',
+                amount: commaStyle(total).toString()
+              })
+              res.json({data: unpaidRec});
+              return
+            })
+            break;
+          case 'meta':
+            userData.findById(req.query.id,(err,doc)=>{
+              if (err) {
+                res.json({data:'error on server'});
+                return;
+              }
+              delete doc.profFee;
+              res.json(doc);     
+            })
+            break;  
+        }
+      }) 
       
   // sends the client page 
     app.route('/client')

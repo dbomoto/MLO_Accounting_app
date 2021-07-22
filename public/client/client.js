@@ -306,7 +306,10 @@ async function viewDetails2(id) {
             datePaid:'${row.cells[4].data}',
             amount:'${row.cells[5].data}'
           })">             
-          `)
+
+            <input type="button" value="PRINT" onclick="printRecord('${row.cells[0].data}')">
+            `
+          )  
         },
         sort: {enabled: false},
       }
@@ -581,6 +584,12 @@ async function displayModal() {
   // console.log('here');
   const tagModal = document.getElementById("modal-container");
   await tagModal.classList.toggle("toggleDisplayModal")
+}
+
+function printRecord(id) {
+  sessionStorage.setItem("clientID", id);
+  // location.href = "1b-session.html";
+  window.open(`/print?id=none&need=show`);
 }
 
 summaryData();

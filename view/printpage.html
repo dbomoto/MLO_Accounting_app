@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>MLO Accounting App</title>
+    <meta name="author" content="Daniel Benedict L. Omoto">
+    <meta name="description" content="accounting app">
+    <meta name="keywords" content="accounting, app, tool,">
+    <link rel="stylesheet" href="/cside/gridjs/dist/theme/mermaid.css" type="text/css">     
+    <link rel="stylesheet" href="/cside/print-js/dist/print.css" type="text/css">     
+    <link rel="stylesheet" href="/public/printpage/print.css" type="text/css">
+  </head>
+  <!-- tailwind does not accept body classes -->
+  <body>
+
+    <!-- navbar with commands -->
+    <nav class="w-full bg-red-600 h-14 flex flex-row justify-start items-center p-5">
+      <button class="bg-gray-300 hover:bg-gray-400 active:bg-gray-500 rounded-md h-10 p-1 pl-2 pr-2 border-2 border-gray-500 hover:border-gray-600 active:border-gray-700"  type="button" onclick="printJS({printable:'pageWrapper',type:'html',css:['/cside/gridjs/dist/theme/mermaid.css','/public/printpage/print.css'],
+      documentTitle: `${docTitle}`
+      })">
+          Print Index
+      </button>
+    </nav>
+
+  <!-- page wrapper -->
+  <div id="pageWrapper" class="w-full min-h-screen flex flex-col justify-center items-center pt-10">
+
+      <!-- index cover -->
+      <div id="indexContainer" class=" border-black border-4 flex flex-col place-content-between" style="width: 600px; height: auto;">
+
+        <!-- top section of index -->
+        <div id="topSection" class=" p-3 border-black border-b-4 flex flex-row place-content-between">
+          <div>
+            <span class="text-2xl text-red-600 font-bold">MARISSA L. OMOTO</span>
+            <br>
+            <span class="text-lg text-red-600 font-semibold">Accounting Office</span>
+          </div>
+          <div class="flex flex-col items-end">
+            <span>Contact No: 0939 935 2615; 0918 466 6240</span>
+            <br>
+            <span>Email: ml_hiring@yahoo.com.ph</span>
+          </div>
+        </div>
+
+        <!-- name of client, via fetch -->
+        <div id="clientName" class="p-3">
+          
+        </div>
+
+        <!-- table of client data, via fetch -->
+        <div id="clientRecords"></div>
+
+        <!-- notes -->
+        <div id="notes" class="p-3 pl-7 border-black border-t-4" >
+          <span class="text-xl font-bold">Important Notes</span>
+          <ol class="list-disc text-red-600 font-semibold">
+            <li>Update books of accounts everyday (cash in and cash out)</li>
+            <li>Check DTI certification for its expiry</li>
+            <li>Inform us of any changes in rentail, exmployees, etc.</li>
+            <li>Inform all your employees to update their personal exemptions with the BIR.</li>
+            <li>Check the validity of your receipts everytime.</li>
+          </ol>
+          <p class="font-medium"> 
+          <span>Received By:</span><span>________________________</span>
+          </p>
+        </div>
+      </div>    
+  </div>
+  </body>
+  <script src="/cside/gridjs/dist/gridjs.umd.js"></script>
+  <script src="/cside/print-js/dist/print.js"></script>
+  <script src="/public/printpage/print.js"></script>
+</html>      
