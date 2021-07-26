@@ -7,13 +7,21 @@
     <meta name="author" content="Daniel Benedict L. Omoto">
     <meta name="description" content="accounting app">
     <meta name="keywords" content="accounting, app, tool,">
-    <link rel="stylesheet" href="/public/homepage/homepage.css" type="text/css">
+    <!-- <link rel="stylesheet" href="/public/homepage/homepage.css" type="text/css"> -->
+    <link rel="stylesheet" href="/public/printpage/print.css" type="text/css">
   </head>
   <body>
 
-    <button id="searchClient">SEARCH CLIENT</button>
-    <br>
-    <button id="addClient">ADD CLIENT</button>
+    <!-- navbar with commands -->
+    <nav class="w-full bg-red-600 h-14 flex flex-row justify-start items-center p-5 fixed">
+      <button id="homepage" type="button" class="bg-gray-300 hover:bg-gray-400 active:bg-gray-500 rounded-md h-10 p-1 pl-2 pr-2 border-2 border-gray-500 hover:border-gray-600 active:border-gray-700 mr-5 w-36"> HOME</button>
+      <button id="searchClient" type="button" class="bg-gray-300 hover:bg-gray-400 active:bg-gray-500 rounded-md h-10 p-1 pl-2 pr-2 border-2 border-gray-500 hover:border-gray-600 active:border-gray-700 mr-5 w-36">SEARCH CLIENT</button>
+      <button id="addClient" type="button" class="bg-gray-300 hover:bg-gray-400 active:bg-gray-500 rounded-md h-10 p-1 pl-2 pr-2 border-2 border-gray-500 hover:border-gray-600 active:border-gray-700 mr-5 w-36">ADD CLIENT</button>
+    </nav>
+
+  <div class="w-full h-screen flex flex-col justify-center items-center">
+      <span class="text-7xl">PF Tracker 1.0</span>
+    </div>
     
   </body>
   <script src="/public/homepage/homepage.js"></script>

@@ -1,6 +1,6 @@
 const path = require('path');
-const ejs = require('ejs');
-const fs = require('fs');
+// const ejs = require('ejs');
+// const fs = require('fs');
 
 // SOURCE: https://www.w3resource.com/javascript-exercises/javascript-math-exercise-39.php
 function commaStyle(num)

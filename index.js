@@ -25,6 +25,9 @@ let app = express();
 app.use('/public', express.static(process.cwd() + '/public'));
 // '/cside' is the path declared on the front-end which translates to '/node_modules/gridjs/dist' on the server side, /cside functions as a shortcut
 // gridjs was not imported to node, but the server will 'serve' the js and css files needed for gridjs for the frontend
+
+// CHANGE THIS METHOD IN THE END, THIS METHOD IS AGAINST POLICIES
+// USE WEBPACK OR THE LIKE, TO BUNDLE ALL CSS FROM NODE AND ACCESS THAT FROM FRONTEND
 // traced the file location using vscode
 app.use('/cside', express.static(path.join(__dirname, '/node_modules')))
 

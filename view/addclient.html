@@ -8,33 +8,48 @@
     <meta name="description" content="accounting app">
     <meta name="keywords" content="accounting, app, tool,">
     <link rel="stylesheet" href="/cside/gridjs/dist/theme/mermaid.css" type="text/css">
+    <link rel="stylesheet" href="/public/printpage/print.css" type="text/css">
     <link rel="stylesheet" href="/public/addclient/addclient.css" type="text/css">
   </head>
   <body>
 
-      <form id="formData" name="formData">
-        <p>CLIENT DATA</p>
+    <!-- navbar with commands -->
+    <nav class="w-full bg-red-600 h-14 flex flex-row justify-start items-center p-5 fixed">
+      <button id="homepage" type="button" class="bg-gray-300 hover:bg-gray-400 active:bg-gray-500 rounded-md h-10 p-1 pl-2 pr-2 border-2 border-gray-500 hover:border-gray-600 active:border-gray-700 mr-5 w-36"> HOME</button>
+      <button id="searchClient" type="button" class="bg-gray-300 hover:bg-gray-400 active:bg-gray-500 rounded-md h-10 p-1 pl-2 pr-2 border-2 border-gray-500 hover:border-gray-600 active:border-gray-700 mr-5 w-36">SEARCH CLIENT</button>
+      <button id="addClient" type="button" class="bg-gray-300 hover:bg-gray-400 active:bg-gray-500 rounded-md h-10 p-1 pl-2 pr-2 border-2 border-gray-500 hover:border-gray-600 active:border-gray-700 mr-5 w-36">ADD CLIENT</button>
+    </nav>
+
+<div class="flex flex-row">
+    <div class="w-72 h-screen pt-16 pl-4 pr-4">
+      <form id="formData" name="formData"  class="space-y">
+        <p class="text-3xl">CLIENT DATA</p>
         <label for="indexNumber">Index Number</label><br>
-        <input type="text" id="indexNumber" name="indexNumber" placeholder="47"><br>
+        <input type="text" id="indexNumber" name="indexNumber" placeholder="47" class="border-2 border-gray-400" required><br>
         <label for="firstName">First Name</label><br>
-        <input type="text" id="firstName" name="firstName" placeholder="Daniel"><br>
+        <input type="text" id="firstName" name="firstName" placeholder="Daniel" class="border-2 border-gray-400" required><br>
         <label for="lastName">Last Name</label><br>
-        <input type="text" id="lastName" name="lastName" placeholder="Omoto"><br>         
+        <input type="text" id="lastName" name="lastName" placeholder="Omoto" class="border-2 border-gray-400" required><br>         
         <label for="companyName">Company Name</label><br>
-        <input type="text" id="companyName" name="companyName" placeholder="DBOmoto Web Dev"><br>            
-        <input type="submit" value="Add Client" id="addClient">
-        <br>
-        <input type="reset">
+        <input type="text" id="companyName" name="companyName" placeholder="DBOmoto Web Dev" class="border-2 border-gray-400" required><br>
+
+        <div class="pt-3 space-x">
+        <input type="submit" value="Add Client" id="addClient" class="w-1/2 p-2 border-2 border-gray-500 bg-gray-300 rounded-md hover:bg-gray-400 active:bg-gray-500 hover:border-gray-600 active:border-gray-700">
+        <input type="reset" class="w-1/2 p-2 mt-3 border-2 border-gray-500 bg-gray-300 rounded-md hover:bg-gray-400 active:bg-gray-500 hover:border-gray-600 active:border-gray-700" >
+        </div>
       </form>
+    </div>  
         
       <!-- <br>
       <p>Server Response</p>
       <div id="serverResponse"></div> -->
 
       <!-- display here all clients currently on the database; command to edit is present on the table; editting will be dispayed on the modal -->      
-      <div id="clientDataContainer">
+      <div id="clientDataContainer" class="w-full h-screen p-8 flex flex-col justify-center items-center">
         <div id="clientData"></div>
       </div>
+
+</div>
 
     <!-- MODAL SECTION -->
     <div class="modal-container toggleDisplayModal" id="modal-container">
