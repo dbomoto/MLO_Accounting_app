@@ -8,49 +8,69 @@
     <meta name="description" content="accounting app">
     <meta name="keywords" content="accounting, app, tool,">
     <link rel="stylesheet" href="/cside/gridjs/dist/theme/mermaid.css" type="text/css">   
-    <link rel="stylesheet" href="/public/printpage/print.css" type="text/css">
+    <link rel="stylesheet" href="/public/printpage/print.css" type="text/css">    
     <link rel="stylesheet" href="/public/client/client.css" type="text/css">
     <!-- <script src="/public/homepage/index.js"></script> -->
   </head>
   <body>
 
+      <!-- navbar with commands -->
+    <nav class="w-full bg-red-600 h-14 flex flex-row justify-start items-center p-5 fixed z-10">
+      <button id="homepage" type="button" class="bg-gray-300 hover:bg-gray-400 active:bg-gray-500 rounded-md h-10 p-1 pl-2 pr-2 border-2 border-gray-500 hover:border-gray-600 active:border-gray-700 mr-5 w-36"> HOME</button>
+      <button id="searchClient" type="button" class="bg-gray-300 hover:bg-gray-400 active:bg-gray-500 rounded-md h-10 p-1 pl-2 pr-2 border-2 border-gray-500 hover:border-gray-600 active:border-gray-700 mr-5 w-36">SEARCH CLIENT</button>
+      <button id="addClient" type="button" class="bg-gray-300 hover:bg-gray-400 active:bg-gray-500 rounded-md h-10 p-1 pl-2 pr-2 border-2 border-gray-500 hover:border-gray-600 active:border-gray-700 mr-5 w-36">ADD CLIENT</button>
+    </nav>  
+
+
+<div class="flex flex-row pt-16 z-0 items-start pr-6">
     <!-- SEARCH FORM -->
-    <div id="searchForm">
+    <div id="searchForm" class="w-72 h-screen pl-4 pr-4">
       <form id="formData" name="formData">
         <label for="indexNumber">Index Number</label><br>
-        <input type="text" id="indexNumber" name="indexNumber" placeholder="47"><br>
+        <input pattern="^[0-9]{1,3}[a-zA-z]?$" onkeyup="this.value = this.value.toUpperCase();" type="text" id="indexNumber" name="indexNumber" placeholder="47" class="border-2 border-gray-400"><br>
         <label for="firstName">First Name</label><br>
-        <input type="text" id="firstName" name="firstName" placeholder="Daniel"><br>
+        <input pattern="[a-zA-Z\s]*" onkeyup="this.value = this.value.toUpperCase();" type="text" id="firstName" name="firstName" placeholder="Daniel" class="border-2 border-gray-400"><br>
         <label for="lastName">Last Name</label><br>
-        <input type="text" id="lastName" name="lastName" placeholder="Omoto"><br>          
+        <input pattern="[a-zA-Z\s]**" onkeyup="this.value = this.value.toUpperCase();" type="text" id="lastName" name="lastName" placeholder="Omoto" class="border-2 border-gray-400"><br>          
         <label for="companyName">Company Name</label><br>
-        <input type="text" id="companyName" name="companyName" placeholder="DBOmoto Web Dev"><br>
-        <label for="info"></label>
+        <input pattern="[a-zA-Z\s]**" onkeyup="this.value = this.value.toUpperCase();" type="text" id="companyName" name="companyName" placeholder="DBOmoto Web Dev" class="border-2 border-gray-400"><br>
+        <!-- <label for="info"></label>
         <select name="info" id="info">
           <option name="allRecords" selected>All Records</option>
           <option name="professioanlFee">Professional Fee</option>     
         </select>
-        <br>
-        <input type="submit" value="Search" id="submitSearch">  
-        <br>
-        <input type="reset">
+        <br> -->
+
+        <div>
+          <input type="submit" value="Search" id="submitSearch" class="w-1/2 p-2 border-2 border-gray-500 bg-gray-300 rounded-md hover:bg-gray-400 active:bg-gray-500 hover:border-gray-600 active:border-gray-700 mt-2">  
+          <br>
+          <input type="reset" class="w-1/2 p-2 border-2 border-gray-500 bg-gray-300 rounded-md hover:bg-gray-400 active:bg-gray-500 hover:border-gray-600 active:border-gray-700 mt-2">
+        </div>
       </form>
     </div>
 
+<div class="w-full h-auto flex flex-col justify-center items-center mx-auto">
+
+    <!-- SUMMARY -->
+    <!-- summary will adapt depending on what "info" input is chosen -->
+    <h4 class="font-semibold text-2xl text-center mt-10">Clients with balance</h4>
+    <!-- div must be empty in order for gridjs to work -->
+    <div id="summaryWrapper" >
+      <div id="summary"></div>
+    </div>
+
     <!-- CLIENT DATA -->
-    <div id="dataOutputCaption"></div>
+    <div id="dataOutputCaption" class="font-semibold text-2xl text-center mt-10"></div>
     <!-- table will adpat to what kind of "info" input is chosen -->
-    <div id="dataOutput">
+    <div id="dataOutput" >
       <div id="dataOutputContent"></div>
     </div>
     
-    <!-- SUMMARY -->
-    <!-- summary will adapt depending on what "info" input is chosen -->
-    <h4>Clients with balance</h4>
-    <!-- div must be empty in order for gridjs to work -->
-    <div id="summaryWrapper">
-      <div id="summary"></div>
-    </div>
+
+
+</div>
+
+</div>
 
     <!-- MODAL SECTION -->
     <div class="modal-container toggleDisplayModal" id="modal-container">
@@ -58,7 +78,7 @@
       <div class="modal-backdrop">
         <div class="modal-content">
           <label class="modal-close" for="modal-toggle">x</label>
-          <h2 id="modalTitle">Modal title</h2>
+          <h2 id="modalTitle" class="text-2xl font-bold">Modal title</h2>
           <hr />
           <p id="modalContent">Modal Content</p>
           <!-- <label class="modal-close button" for="modal-toggle">CLOSE</label>

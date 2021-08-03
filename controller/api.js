@@ -3,8 +3,7 @@ const path = require('path');
 // const fs = require('fs');
 
 // SOURCE: https://www.w3resource.com/javascript-exercises/javascript-math-exercise-39.php
-function commaStyle(num)
-  {
+function commaStyle(num){
     var num_parts = num.toString().split(".");
     num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     return num_parts.join(".");
@@ -434,33 +433,5 @@ module.exports = function(app,userData){
             //     })
       })  
 
-          // }
-        // })
-
-
-        // }
-
-      // WORKING CODE
-      //   userData.findByIdAndUpdate(req.body.clientID, {
-      //     $set: {
-      //       indexNumber: req.body.clientIN,
-      //       firstName: req.body.clientFN,
-      //       lastName: req.body.clientLN,
-      //       companyName: req.body.clientCN            
-      //     }
-      //   },(err,doc)=>{
-      //     if (err) {
-      //         res.json({message: 'Error on saving new client.'});
-      //       }
-      //     res.json({
-      //       message: 'Client record succesfully changed to:',
-      //       indexNumber: req.body.clientIN,
-      //       firstName: req.body.clientFN,
-      //       lastName: req.body.clientLN,
-      //       companyName: req.body.clientCN
-      //     })   
-      //   }
-      //  )
-
-      // })          
+       
 }

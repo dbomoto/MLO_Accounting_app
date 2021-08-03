@@ -75,7 +75,10 @@ window.onload = function() {
           name: 'reference',
           hidden: true
         },
-        'Index Number',
+        {
+          name: 'Index Number', 
+          sort: false
+        },
         'First Name',
         'Last Name',
         'Company Name',
@@ -107,7 +110,13 @@ window.onload = function() {
         enabled: true,
         limit: 5
       },
-      sort: true   
+      sort: true,
+      className: {
+        table: 'w-full h-auto'
+      },
+      fixedHeader: true,
+      height: 'auto',
+      autoWidth: true  
     }).render(document.getElementById('clientData'));
   };
 
@@ -136,25 +145,27 @@ window.onload = function() {
 
 
     // take note of the value attributes on the inputs; it must have '' or "" in order to accomodate all the text in that variable, otherwise, if your text has spaces, it will only show the first complete word.
+
+    // cannot use patterns in this kind of modal since pattern depends on the submit function, obtaining the same effect using javascript produced negative resulsts, find a better modal model.
     toggleButton.checked = true;
     modalTitle.innerHTML = `Update Client MetaData`;
     modalContent.innerHTML =  `
-    <form class="defaultForm" id="editFormData">
+    <form class="defaultForm flex flex-col items-left space-y-1" id="editFormData">
 
-      <label for="clientID">Client ID:</label>
-      <input type="text" value='${clientID}' id="clientID" for="clientID" name="clientID" readonly> 
+      <label class="text-lg font-semibold" for="clientID">Client ID:</label>
+      <input class="border-2 border-gray-400" type="text" value='${clientID}' id="clientID" for="clientID" name="clientID" readonly> 
 
-      <label for="clientIN">Index No:</label>
-      <input type="text" id="clientIN" for="clientIN" name="clientIN" value='${clientIN}'>    
+      <label class="text-lg font-semibold" for="clientIN">Index No:</label>
+      <input class="border-2 border-gray-400" type="text" id="clientIN" for="clientIN" name="clientIN" value='${clientIN}'>    
 
-      <label for="clientFN">First Name</label>
-      <input type="text" value='${clientFN}' id="clientFN" for="clientFN" name="clientFN">
+      <label class="text-lg font-semibold" for="clientFN">First Name</label>
+      <input onkeyup="this.value = this.value.toUpperCase();" class="border-2 border-gray-400" type="text" value='${clientFN}' id="clientFN" for="clientFN" name="clientFN">
 
-      <label for="clientLN">Last Name</label>
-      <input type="text" value='${clientLN}' id="clientLN" for="clientLN" name="clientLN">
+      <label class="text-lg font-semibold" for="clientLN">Last Name</label>
+      <input onkeyup="this.value = this.value.toUpperCase();" class="border-2 border-gray-400" type="text" value='${clientLN}' id="clientLN" for="clientLN" name="clientLN">
     
-      <label for="clientCN">Company Name</label>
-      <input type="text" value='${clientCN}' id="clientCN" for="clientCN" name="clientCN">
+      <label class="text-lg font-semibold" for="clientCN">Company Name</label>
+      <input onkeyup="this.value = this.value.toUpperCase();" class="border-2 border-gray-400" type="text" value='${clientCN}' id="clientCN" for="clientCN" name="clientCN">
 
     </form>
     

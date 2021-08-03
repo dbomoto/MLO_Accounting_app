@@ -125,9 +125,7 @@ MODAL SECTION
   display: none;
 }
 
-/*  
-dataOutput Section
-*/
+/*
 table {
   width: 100%;
 }
@@ -141,9 +139,6 @@ caption, th, td {
   padding: 5px;
 }
 
-/*  
-Global Styles
-*/
 #searchForm, #dataOutput, #summary {
   margin-top: 10px;
   margin-bottom: 10px;
@@ -153,9 +148,8 @@ body {
   background-color: #f2f2f2;
 }
 
-/*  
-searchForm Section
-*/
+ 
+
 #searchForm {
   max-width: 280px;
 }
@@ -167,11 +161,9 @@ searchForm Section
   margin-bottom: 5px;
 }
 
-/* 
-Default Form Tag Alignment
-*/
+
 .defaultForm {
   display: flex;
   flex-direction: column;
   align-items: left;
-}
+} */
