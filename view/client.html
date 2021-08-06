@@ -22,18 +22,18 @@
     </nav>  
 
 
-<div class="flex flex-row pt-16 z-0 items-start pr-6">
+<div class="flex flex-row">
     <!-- SEARCH FORM -->
-    <div id="searchForm" class="w-72 h-screen pl-4 pr-4">
-      <form id="formData" name="formData">
+    <div id="searchForm" class="w-3/12 h-screen mt-16 p-2">
+      <form id="formData" name="formData" class="space-y w-full">
         <label for="indexNumber">Index Number</label><br>
-        <input pattern="^[0-9]{1,3}[a-zA-z]?$" onkeyup="this.value = this.value.toUpperCase();" type="text" id="indexNumber" name="indexNumber" placeholder="47" class="border-2 border-gray-400"><br>
+        <input pattern="^[0-9]{1,3}[a-zA-z]?$" onkeyup="this.value = this.value.toUpperCase();" type="text" id="indexNumber" name="indexNumber" placeholder="47" class="border-2 border-gray-400 w-full"><br>
         <label for="firstName">First Name</label><br>
-        <input pattern="[a-zA-Z\s]*" onkeyup="this.value = this.value.toUpperCase();" type="text" id="firstName" name="firstName" placeholder="Daniel" class="border-2 border-gray-400"><br>
+        <input pattern="[a-zA-Z\s]*" onkeyup="this.value = this.value.toUpperCase();" type="text" id="firstName" name="firstName" placeholder="Daniel" class="border-2 border-gray-400 w-full"><br>
         <label for="lastName">Last Name</label><br>
-        <input pattern="[a-zA-Z\s]**" onkeyup="this.value = this.value.toUpperCase();" type="text" id="lastName" name="lastName" placeholder="Omoto" class="border-2 border-gray-400"><br>          
+        <input pattern="[a-zA-Z\s]**" onkeyup="this.value = this.value.toUpperCase();" type="text" id="lastName" name="lastName" placeholder="Omoto" class="border-2 border-gray-400 w-full"><br>          
         <label for="companyName">Company Name</label><br>
-        <input pattern="[a-zA-Z\s]**" onkeyup="this.value = this.value.toUpperCase();" type="text" id="companyName" name="companyName" placeholder="DBOmoto Web Dev" class="border-2 border-gray-400"><br>
+        <input pattern="[a-zA-Z\s]**" onkeyup="this.value = this.value.toUpperCase();" type="text" id="companyName" name="companyName" placeholder="DBOmoto Web Dev" class="border-2 border-gray-400 w-full"><br>
         <!-- <label for="info"></label>
         <select name="info" id="info">
           <option name="allRecords" selected>All Records</option>
@@ -42,14 +42,14 @@
         <br> -->
 
         <div>
-          <input type="submit" value="Search" id="submitSearch" class="w-1/2 p-2 border-2 border-gray-500 bg-gray-300 rounded-md hover:bg-gray-400 active:bg-gray-500 hover:border-gray-600 active:border-gray-700 mt-2">  
+          <input type="submit" value="Search" id="submitSearch" class=" w-full p-2 border-2 border-gray-500 bg-gray-300 rounded-md hover:bg-gray-400 active:bg-gray-500 hover:border-gray-600 active:border-gray-700 mt-2">  
           <br>
-          <input type="reset" class="w-1/2 p-2 border-2 border-gray-500 bg-gray-300 rounded-md hover:bg-gray-400 active:bg-gray-500 hover:border-gray-600 active:border-gray-700 mt-2">
+          <input type="reset" class="w-full p-2 border-2 border-gray-500 bg-gray-300 rounded-md hover:bg-gray-400 active:bg-gray-500 hover:border-gray-600 active:border-gray-700 mt-2">
         </div>
       </form>
     </div>
 
-<div class="w-full h-auto flex flex-col justify-center items-center mx-auto">
+<div class="w-9/12 h-screen my-16 flex flex-col">
 
     <!-- SUMMARY -->
     <!-- summary will adapt depending on what "info" input is chosen -->
