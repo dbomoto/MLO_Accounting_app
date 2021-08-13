@@ -14,7 +14,7 @@
   <body>
 
     <!-- navbar with commands -->
-    <nav class="w-full bg-red-600 h-16 flex flex-row justify-start items-center p-5 fixed">
+    <nav class="w-full bg-red-600 h-16 flex flex-row justify-start items-center p-5 fixed z-10">
       <button id="homepage" type="button" class="bg-gray-300 hover:bg-gray-400 active:bg-gray-500 rounded-md h-10 p-1 pl-2 pr-2 border-2 border-gray-500 hover:border-gray-600 active:border-gray-700 mr-5 w-36"> HOME</button>
       <button id="searchClient" type="button" class="bg-gray-300 hover:bg-gray-400 active:bg-gray-500 rounded-md h-10 p-1 pl-2 pr-2 border-2 border-gray-500 hover:border-gray-600 active:border-gray-700 mr-5 w-36">SEARCH CLIENT</button>
       <button id="addClient" type="button" class="bg-gray-300 hover:bg-gray-400 active:bg-gray-500 rounded-md h-10 p-1 pl-2 pr-2 border-2 border-gray-500 hover:border-gray-600 active:border-gray-700 mr-5 w-36">ADD CLIENT</button>
@@ -34,9 +34,9 @@
         <input pattern="[a-zA-Z\s]*" onkeyup="this.value = this.value.toUpperCase();" type="text" id="companyName" name="companyName" placeholder="DBOmoto Web Dev" class="border-2 border-gray-400 w-full" required><br>
 
         <div class="pt-3 space-x">
-        <input type="submit" value="Add Client" id="addClient" class="w-full p-2 border-2 border-gray-500 bg-gray-300 rounded-md hover:bg-gray-400 active:bg-gray-500 hover:border-gray-600 active:border-gray-700">
+        <input type="submit" value="Add Client" id="addClient" class="cursor-pointer w-full p-2 border-2 border-gray-500 bg-gray-300 rounded-md hover:bg-gray-400 active:bg-gray-500 hover:border-gray-600 active:border-gray-700">
         <br>
-        <input type="reset" class="w-full p-2 mt-3 border-2 border-gray-500 bg-gray-300 rounded-md hover:bg-gray-400 active:bg-gray-500 hover:border-gray-600 active:border-gray-700" >
+        <input type="reset" class="cursor-pointer w-full p-2 mt-3 border-2 border-gray-500 bg-gray-300 rounded-md hover:bg-gray-400 active:bg-gray-500 hover:border-gray-600 active:border-gray-700" >
         </div>
       </form>
     </div>  
@@ -45,11 +45,22 @@
       <p>Server Response</p>
       <div id="serverResponse"></div> -->
 
-      <!-- display here all clients currently on the database; command to edit is present on the table; editting will be dispayed on the modal -->      
-      <div id="clientDataContainer" class="w-9/12 h-screen mt-16" >
+      <!-- display here all clients currently on the database; command to edit is present on the table; editting will be dispayed on the modal -->
+      <!--
+        take note of the functions of each div below
+        1st div: to wrap everything for better rendering in html
+        2nd div: serves as reference to add / remove 3rd div in order for gridjs to work.
+        3rd div: where the gridjs data is displayed
+        NOTE: in case of mot
+        -->
+  <div class="w-9/12 h-screen my-16 flex flex-col">
+
+      <div id="clientDataContainer">
         <div id="clientData" class="mx-auto"></div>
       </div>
 
+  </div>
+  
 </div>
 
     <!-- MODAL SECTION -->

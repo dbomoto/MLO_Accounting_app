@@ -97,7 +97,7 @@ async function searchClient() {
 
 async function searchClient2(cb) {
 
-  // everytime a search it qued, it must remove the "dataOutputContent" element and re-added in order for gridjs to render again.
+  // everytime a search is qued, it must remove the "dataOutputContent" element and re-added in order for gridjs to render again.
   await removeAllChildNodes(display, 'dataOutputContent');
 
   await removeAllChildNodes(dataOutputCaption, 'dataCaptionContent');
@@ -121,9 +121,11 @@ async function searchClient2(cb) {
         sort: false,
         formatter: (cell, row) => {
           return gridjs.html(`
-        <input class="bg-blue-500 py-2 px-8 text-lg rounded-md text-white" type="button" onclick="viewDetails2('${row.cells[0].data}')" value="View Details">
+        <div class="inline w-full h-auto">
+          <input class="w-44 m-1 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 cursor-pointer py-2 px-8 text-lg rounded-md text-white" type="button" onclick="viewDetails2('${row.cells[0].data}')" value="View Details">
 
-        <input class="bg-blue-500 py-2 px-8 text-lg rounded-md text-white" type="button" onclick="deleteClient('${row.cells[0].data}')" value="Delete Client">
+          <input class="w-44 m-1 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 cursor-pointer py-2 px-8 text-lg rounded-md text-white" type="button" onclick="deleteClient('${row.cells[0].data}')" value="Delete Client">
+        </div>
         `)
         }
         // formatter: (cell, row) => {         
@@ -330,17 +332,21 @@ async function viewDetails2(id) {
         name: 'Commands',
         formatter: (cell, row) => {
           return gridjs.html(`
-            <input class="bg-blue-500 py-2 px-8 text-lg rounded-md text-white" type="button" value="ADD RECORD" id="addProfFeeRec" onclick="addProfFeeRec('${row.cells[0].data}',blankData,true)">          
+          
+            <input class="m-1 w-44 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 cursor-pointer py-2 px-8 text-lg rounded-md text-white" type="button" value="ADD RECORD" id="addProfFeeRec" onclick="addProfFeeRec('${row.cells[0].data}',blankData,true)">          
 
-            <input class="bg-blue-500 py-2 px-8 text-lg rounded-md text-white" type="button" value="EDIT RECORD" onclick="showProfFeeRec('${row.cells[1].data + 1}',{
+            <input class="m-1 w-44 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 cursor-pointer py-2 px-8 text-lg rounded-md text-white" type="button" value="EDIT RECORD" onclick="showProfFeeRec('${row.cells[1].data + 1}',{
             id:'${row.cells[0].data}',
             month:'${row.cells[2].data}',
             year:'${row.cells[3].data}',
             datePaid:'${row.cells[4].data}',
             amount:'${row.cells[5].data}'
-          })">             
+          })"> 
 
-            <input class="bg-blue-500 py-2 px-8 text-lg rounded-md text-white" type="button" value="PRINT" onclick="printRecord('${row.cells[0].data}')">
+            <input class="m-1 w-44 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 cursor-pointer py-2 px-8 text-lg rounded-md text-white" type="button" value="DELETE RECORD" onclick="deleteProfFeeRec('${row.cells[0].data}','${row.cells[1].data + 1}')">                       
+
+            <input class="m-1 w-44 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 cursor-pointer py-2 px-8 text-lg rounded-md text-white" type="button" value="PRINT" onclick="printRecord('${row.cells[0].data}')">
+         
             `
           )
         },
@@ -646,6 +652,25 @@ function commaStyle(num) {
   var num_parts = num.toString().split(".");
   num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   return num_parts.join(".");
+}
+
+async function deleteProfFeeRec(id, recordNumber) {
+  const form = new FormData();
+  form.append('id', id);
+  form.append('recordNumber', recordNumber);
+
+
+  const dataClient = await fetch('/client/search', {
+    method: 'DELETE',
+    body:form
+  })
+  const parsed = await dataClient.json();
+  alert(parsed.data);
+  
+  if (parsed.refresh) {
+    await summaryData();
+    await viewDetails2(id);
+  }
 }
 
 summaryData();

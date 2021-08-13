@@ -199,7 +199,17 @@ module.exports = function(app,userData){
       }) 
       // deletes a record of the client
       .delete((req,res)=>{
-        
+        // console.log(req.body)
+        userData.findById(req.body.id, async (err,doc)=>{
+          if (err) {
+            res.json({data:'error on server', refresh: false});
+            return;
+          }    
+          doc.profFee.splice(req.body.recordNumber -1,1);
+          await doc.save();
+          res.json({data:'record deleted', refresh: true});
+          return;     
+        })
       })
 
   // route for add client requests
