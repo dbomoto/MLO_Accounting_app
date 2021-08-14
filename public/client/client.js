@@ -382,6 +382,7 @@ async function viewDetails2(id) {
   captionNode.innerText = `${indexNumber} ${firstName} ${lastName} ${companyName}`;
   caption.appendChild(captionNode);
 
+  window.scrollTo(0,9999);
 }
 
 // add a blank section of record ready for edit by the user
